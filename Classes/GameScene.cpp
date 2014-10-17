@@ -3,7 +3,6 @@
 #include "CharacterScene.h" 
 
 USING_NS_CC;
-auto chara = Character::create();
 Scene* Game::createScene()
 {
     // 'scene' is an autorelease object
@@ -32,15 +31,17 @@ bool Game::init()
 
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	_chara = Character::create();
 
-	addChild(chara);
-
-	
-
-	chara->setPositionX(90.0);
-	chara->setPositionY(90.0);
+	addChild(_chara);
 
 	
+
+	_chara->setPositionX(90.0);
+	_chara->setPositionY(90.0);
+	
+
+
 	auto keyboardListener = EventListenerKeyboard::create();
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(Game::onKeyPresed, this);
 	//keyboardListener->onKeyReleased = CC_CALLBACK_2(Game::onKeyReleased, this);
@@ -101,12 +102,11 @@ void Game::GoToGameScene(Ref* pSender)
 void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	
 	_pressedKey = keycode;
-
 	switch (keycode)
 	{
 	case EventKeyboard::KeyCode::KEY_A:
-		chara->setPositionX(chara->getPositionX() - chara->getmovement());
-
+		_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
+			
 		break;
 	}
 

@@ -2,11 +2,12 @@
 #define __GAME_SCENE_H__
 
 #include "cocos2d.h"
+#include "CharacterScene.h"
 
 class Game : public cocos2d::Layer
 {
-	EventKeyboard::KeyCode pressedKey;
-
+	cocos2d::EventKeyboard::KeyCode _pressedKey;
+	Character *_chara;
 
 public:
 	
@@ -30,7 +31,7 @@ public:
     
 	void GoToGameScene(Ref* pSender);
 
-	void onKeyPresed(EventKeyboard::KeyCode keyCode, Event *event);
+	void onKeyPresed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
 
 	//void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
 

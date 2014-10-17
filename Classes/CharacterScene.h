@@ -23,11 +23,12 @@ public:
 
 	void GoToCharacterScene(Ref* pSender);
 
-	int getmovement();
+	float getmovement();
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(Character);
 
+	
 };
 
 #endif // __HELLOWORLD_SCENE_H__

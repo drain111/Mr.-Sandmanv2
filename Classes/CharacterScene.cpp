@@ -4,7 +4,7 @@
 USING_NS_CC;
 
 auto vidas = 10;
-auto movement = 10;
+auto movement = 20.0;
 // on "init" you need to initialize your instance
 bool Character::init()
 {
@@ -80,6 +80,6 @@ bool Character::onContactBegin(cocos2d::PhysicsContact& contact) {
 
 	return true;
 }
-int getmovement() {
+float Character::getmovement() {
 	return movement;
 }

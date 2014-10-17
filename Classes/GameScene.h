@@ -29,7 +29,11 @@ public:
     
 	void GoToGameScene(Ref* pSender);
 
-
+	struct Command {
+		std::string name;
+		std::string help;
+		std::function<void(int, const std::string&)> callback;
+	};
 	
 
     // implement the "static create()" method manually

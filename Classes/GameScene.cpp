@@ -1,6 +1,12 @@
 #include "MainMenuScene.h"
 #include "GameScene.h"
 #include "CharacterScene.h" 
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+#include &lt;unistd.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;netdb.h&gt;
+#endif
 USING_NS_CC;
 
 Scene* Game::createScene()
@@ -34,6 +40,9 @@ bool Game::init()
 	auto chara = Character::create();
 	
 	addChild(chara);
+
+	//auto console = Director::getInstance()->getConsole();
+	//console->addCommand(command);
 
 	chara->setPositionX(90.0);
 	chara->setPositionY(90.0);
@@ -69,7 +78,23 @@ bool Game::init()
     
     return true;
 }
-
+/*struct Console::Command command = {
+	"label",
+	"Change or print the current label string. Args: [&lt;label string&gt;]",
+	[label] (int fd, const std::string& args) {
+		// add callback code here
+		if (args.length()==0)
+{
+    const std::string& str = label->getString();
+    send(fd, str.c_str(), str.length(), 0);
+    send(fd, "\n", 1, 0);
+}
+else
+{
+    label->setString(args);
+}
+	}
+};*/
 
 void Game::menuCloseCallback(Ref* pSender)
 {

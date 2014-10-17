@@ -5,10 +5,11 @@
 
 class Game : public cocos2d::Layer
 {
-
+	EventKeyboard::KeyCode pressedKey;
 
 
 public:
+	
 
 	void setPhysicsWorld(cocos2d::PhysicsWorld* world) {
 		mWorld = world;
@@ -29,12 +30,10 @@ public:
     
 	void GoToGameScene(Ref* pSender);
 
-	struct Command {
-		std::string name;
-		std::string help;
-		std::function<void(int, const std::string&)> callback;
-	};
-	
+	void onKeyPresed(EventKeyboard::KeyCode keyCode, Event *event);
+
+	//void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
+
 
     // implement the "static create()" method manually
     CREATE_FUNC(Game);

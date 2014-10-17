@@ -1,14 +1,9 @@
 #include "MainMenuScene.h"
 #include "GameScene.h"
 #include "CharacterScene.h" 
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-#include &lt;unistd.h&gt;
-#include &lt;sys/types.h&gt;
-#include &lt;sys/socket.h&gt;
-#include &lt;netdb.h&gt;
-#endif
-USING_NS_CC;
 
+USING_NS_CC;
+auto chara = Character::create();
 Scene* Game::createScene()
 {
     // 'scene' is an autorelease object
@@ -19,6 +14,7 @@ Scene* Game::createScene()
 	layer->setPhysicsWorld(scene->getPhysicsWorld());
     // add layer as a child to scene
     scene->addChild(layer);
+
 
     // return the scene
     return scene;
@@ -33,19 +29,24 @@ bool Game::init()
     {
         return false;
     }
-    
+
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	
-	auto chara = Character::create();
-	
+
 	addChild(chara);
 
-	//auto console = Director::getInstance()->getConsole();
-	//console->addCommand(command);
+	
 
 	chara->setPositionX(90.0);
 	chara->setPositionY(90.0);
+
+	
+	auto keyboardListener = EventListenerKeyboard::create();
+	keyboardListener->onKeyPressed = CC_CALLBACK_2(Game::onKeyPresed, this);
+	//keyboardListener->onKeyReleased = CC_CALLBACK_2(Game::onKeyReleased, this);
+	
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+	this->scheduleUpdate();
 
 	/*auto body = PhysicsBody::createCircle(chara->getContentSize().width / 2); // radius
 	body->setContactTestBitmask(true);
@@ -74,27 +75,10 @@ bool Game::init()
     //    you may modify it.
 
     // add a "close" icon to exit the progress. it's an autorelease object
-   
-    
+	
     return true;
+	
 }
-/*struct Console::Command command = {
-	"label",
-	"Change or print the current label string. Args: [&lt;label string&gt;]",
-	[label] (int fd, const std::string& args) {
-		// add callback code here
-		if (args.length()==0)
-{
-    const std::string& str = label->getString();
-    send(fd, str.c_str(), str.length(), 0);
-    send(fd, "\n", 1, 0);
-}
-else
-{
-    label->setString(args);
-}
-	}
-};*/
 
 void Game::menuCloseCallback(Ref* pSender)
 {
@@ -104,7 +88,6 @@ void Game::menuCloseCallback(Ref* pSender)
 #endif
 
     Director::getInstance()->end();
-
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
 #endif
@@ -114,4 +97,18 @@ void Game::GoToGameScene(Ref* pSender)
 	//auto scene = GameScene::createScene();
     
    // Director::getInstance()->replaceScene(TransitionFade::create(1.0,scene));
+}
+void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
+	
+	_pressedKey = keycode;
+
+	switch (keycode)
+	{
+	case EventKeyboard::KeyCode::KEY_A:
+		chara->setPositionX(chara->getPositionX() - chara->getmovement());
+
+		break;
+	}
+
+
 }

@@ -5,6 +5,7 @@
 
 class Character : public cocos2d::Sprite
 {
+
 public:
 
 	
@@ -22,6 +23,7 @@ public:
 
 	void GoToCharacterScene(Ref* pSender);
 
+	int getmovement();
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(Character);

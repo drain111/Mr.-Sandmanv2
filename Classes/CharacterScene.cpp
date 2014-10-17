@@ -5,30 +5,28 @@ USING_NS_CC;
 
 auto vidas = 10;
 
-Sprite* Character::createCharacter()
-{
-	// 'scene' is an autorelease object
-	Sprite* sprite = Sprite::create("char/char.png");
-
-	// 'layer' is an autorelease object
-	// add layer as a child to scene
-
-	// return the scene
-	return sprite;
-}
-
 // on "init" you need to initialize your instance
-/*bool Character::init()
+bool Character::init()
 {
 	//////////////////////////////
 	// 1. super init first
-	if (!Layer::init())
+	if (!Sprite::init())
 	{
 		return false;
 	}
 
-	Size visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	this->setTexture("char/char.png");
+
+
+	auto contactListener = EventListenerPhysicsContact::create();
+	contactListener->onContactBegin = CC_CALLBACK_1(Character::onContactBegin, this);
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
+	
+	auto body = PhysicsBody::createCircle(this->getContentSize().width / 2); // radius
+	body->setContactTestBitmask(true);
+	body->setDynamic(true);
+	this->setPhysicsBody(body);
+
 
 	//auto Start = MenuItemImage::create("mainmenu/start.png", "mainmenu/start(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
 
@@ -71,10 +69,14 @@ void Character::menuCloseCallback(Ref* pSender)
 	exit(0);
 #endif
 }
-void Character::GoToGameScene(Ref* pSender)
-{
-	//auto scene = GameScene::createScene();
+bool Character::onContactBegin(cocos2d::PhysicsContact& contact) {
+	// Do something
 
-	// Director::getInstance()->replaceScene(TransitionFade::create(1.0,scene));
+	auto spriteA = (Sprite*)contact.getShapeA()->getBody()->getNode();
+	auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
+
+	if (spriteA->getName().compare("A") == 0 && spriteB->getName().compare("B") == 0) {
+	}
+
+	return true;
 }
-*/

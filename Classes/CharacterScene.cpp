@@ -5,6 +5,7 @@ USING_NS_CC;
 
 auto vidas = 10;
 auto movement = 20.0;
+
 // on "init" you need to initialize your instance
 bool Character::init()
 {
@@ -22,10 +23,13 @@ bool Character::init()
 	contactListener->onContactBegin = CC_CALLBACK_1(Character::onContactBegin, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 	
-	auto body = PhysicsBody::createCircle(this->getContentSize().width / 2); // radius
-	body->setContactTestBitmask(true);
-	body->setDynamic(true);
-	this->setPhysicsBody(body);
+	_body = PhysicsBody::createCircle(this->getContentSize().width / 2); // radius
+	_body->setContactTestBitmask(true);
+	_body->setDynamic(true);
+	_body->setRotationEnable(false);
+	_body->addMass(30.0);
+	_body->addMoment(2.0);
+	this->setPhysicsBody(_body);
 
 
 	//auto Start = MenuItemImage::create("mainmenu/start.png", "mainmenu/start(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
@@ -82,4 +86,9 @@ bool Character::onContactBegin(cocos2d::PhysicsContact& contact) {
 }
 float Character::getmovement() {
 	return movement;
+}
+void Character::applyforce() {
+	
+	_body->applyImpulse(Vec2(0, 13000), _body->getPosition());
+	
 }

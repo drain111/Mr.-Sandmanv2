@@ -32,10 +32,12 @@ bool Game::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	_chara = Character::create();
+	Point center = Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
+
 
 	addChild(_chara);
 
-	
+	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 2, visibleSize.height)));
 
 	_chara->setPositionX(90.0);
 	_chara->setPositionY(90.0);
@@ -44,7 +46,7 @@ bool Game::init()
 
 	auto keyboardListener = EventListenerKeyboard::create();
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(Game::onKeyPresed, this);
-	//keyboardListener->onKeyReleased = CC_CALLBACK_2(Game::onKeyReleased, this);
+	keyboardListener->onKeyReleased = CC_CALLBACK_2(Game::onKeyReleased, this);
 	
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 	this->scheduleUpdate();
@@ -80,7 +82,18 @@ bool Game::init()
     return true;
 	
 }
+void Game::update(float dt) {
+	if (moverderecha) {
+		_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
+	}
+	else {
+		if (moverizq)
+		{
+			_chara->setPositionX(_chara->getPositionX() + _chara->getmovement());
 
+		}
+	}
+}
 void Game::menuCloseCallback(Ref* pSender)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
@@ -105,10 +118,32 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	switch (keycode)
 	{
 	case EventKeyboard::KeyCode::KEY_A:
-		_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
+		moverderecha = true;
 			
+		break;
+	case EventKeyboard::KeyCode::KEY_D:
+		moverizq = true;
+		break;
+	case EventKeyboard::KeyCode::KEY_W:
+		_chara->applyforce();
 		break;
 	}
 
 
+}
+void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
+
+	_pressedKey = keycode;
+	switch (keycode)
+	{
+	case EventKeyboard::KeyCode::KEY_A:
+		moverderecha = false;
+
+		break;
+	case EventKeyboard::KeyCode::KEY_D:
+		
+
+		break;
+	
+	}
 }

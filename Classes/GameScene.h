@@ -8,13 +8,16 @@ class Game : public cocos2d::Layer
 {
 	cocos2d::EventKeyboard::KeyCode _pressedKey;
 	Character *_chara;
+	bool moverderecha = false;
+	bool moverizq = false;
+	bool arriba = false;
 
 public:
 	
 
 	void setPhysicsWorld(cocos2d::PhysicsWorld* world) {
 		mWorld = world;
-		mWorld->setGravity(cocos2d::Vect(0, -2));  // No gravity
+		mWorld->setGravity(cocos2d::Vect(0, -9));  // No gravity
 	}
 
 	bool onContactBegin(cocos2d::PhysicsContact& contact);
@@ -33,9 +36,8 @@ public:
 
 	void onKeyPresed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
 
-	//void onKeyReleased(EventKeyboard::KeyCode keyCode, Event *event);
-
-
+	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
+	void update(float dt);
     // implement the "static create()" method manually
     CREATE_FUNC(Game);
 

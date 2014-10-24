@@ -6,13 +6,16 @@
 class Character : public cocos2d::Sprite
 {
 
+	cocos2d::PhysicsBody *_body;
+
 public:
 
-	
+
 
 	bool onContactBegin(cocos2d::PhysicsContact& contact);
 	cocos2d::PhysicsWorld* mWorld;
 
+	
 	// there's no 'id' in cpp, so we recommend returning the class instance pointer
 
 	// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
@@ -24,6 +27,10 @@ public:
 	void GoToCharacterScene(Ref* pSender);
 
 	float getmovement();
+
+	void applyforce();
+
+	cocos2d::PhysicsBody getbody();
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(Character);

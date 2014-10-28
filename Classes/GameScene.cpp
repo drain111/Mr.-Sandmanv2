@@ -3,6 +3,7 @@
 #include "CharacterScene.h" 
 
 USING_NS_CC;
+
 Scene* Game::createScene()
 {
     // 'scene' is an autorelease object
@@ -28,19 +29,20 @@ bool Game::init()
     {
         return false;
     }
-
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	_chara = Character::create();
 	Point center = Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 
+	i = 1;
+	j = 1;
+	k = 1;
 
 	addChild(_chara);
-
+	
 	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 2, visibleSize.height)));
-
-	_chara->setPositionX(90.0);
-	_chara->setPositionY(90.0);
+	_chara->setPosition3D(Vec3(90.0, 90.0, 0));
+	_chara->setScale(4.0);
 	
 
 
@@ -127,6 +129,9 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	case EventKeyboard::KeyCode::KEY_W:
 		_chara->applyforce();
 		break;
+	case EventKeyboard::KeyCode::KEY_S:
+		_chara->setRotation3D(Vec3(i++,j++,k++));
+		break;
 	}
 
 
@@ -141,7 +146,7 @@ void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 
 		break;
 	case EventKeyboard::KeyCode::KEY_D:
-		
+		moverizq = false;
 
 		break;
 	

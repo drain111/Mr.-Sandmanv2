@@ -16,9 +16,10 @@ bool Character::init()
 		return false;
 	}
 
-	this->setTexture("char/char.png");
+	auto sprite = Sprite3D::create("char/a.obj");
+	sprite->setTexture("char/char.png");
 
-
+	addChild(sprite);
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(Character::onContactBegin, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -89,6 +90,6 @@ float Character::getmovement() {
 }
 void Character::applyforce() {
 	
-	_body->applyImpulse(Vec2(0, 13000), _body->getPosition());
+	_body->applyImpulse(Vec2(0, 4000), _body->getPosition());
 	
 }

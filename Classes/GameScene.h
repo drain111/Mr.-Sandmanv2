@@ -12,6 +12,10 @@ class Game : public cocos2d::Layer
 	bool moverizq = false;
 	bool arriba = false;
 
+	int i;
+	int j;
+	int k;
+
 public:
 	
 

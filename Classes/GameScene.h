@@ -7,7 +7,6 @@
 class Game : public cocos2d::Layer
 {
 	cocos2d::EventKeyboard::KeyCode _pressedKey;
-	Character *_chara;
 	bool moverderecha = false;
 	bool moverizq = false;
 	bool arriba = false;
@@ -18,6 +17,7 @@ class Game : public cocos2d::Layer
 
 public:
 	
+	Character *_chara;
 
 	void setPhysicsWorld(cocos2d::PhysicsWorld* world) {
 		mWorld = world;
@@ -42,6 +42,14 @@ public:
 
 	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
 	void update(float dt);
+
+
+	struct Command {
+		std::string name;
+		std::string help;
+		std::function<void(int, const std::string&)> callback;
+	};
+
     // implement the "static create()" method manually
     CREATE_FUNC(Game);
 

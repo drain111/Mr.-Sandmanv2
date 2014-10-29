@@ -1,6 +1,17 @@
 #include "MainMenuScene.h"
 #include "GameScene.h"
 #include "CharacterScene.h" 
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+#include "unistd.h";
+#include "sys/types.h";
+#include "sys/socket.h";
+#include "netdb.h";
+#else
+#include "io.h";
+#include "WS2tcpip.h";
+#endif
+
+
 
 USING_NS_CC;
 
@@ -44,7 +55,7 @@ bool Game::init()
 	_chara->setPosition3D(Vec3(90.0, 90.0, 0));
 	_chara->setScale(4.0);
 	
-
+	
 
 	auto keyboardListener = EventListenerKeyboard::create();
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(Game::onKeyPresed, this);
@@ -52,6 +63,7 @@ bool Game::init()
 	
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 	this->scheduleUpdate();
+
 
 	/*auto body = PhysicsBody::createCircle(chara->getContentSize().width / 2); // radius
 	body->setContactTestBitmask(true);
@@ -80,10 +92,29 @@ bool Game::init()
     //    you may modify it.
 
     // add a "close" icon to exit the progress. it's an autorelease object
-	
+	struct Console::Command changeforce = {
+		"label",
+		"Change or print the current label string. Args: [&lt;label string&gt;]",
+		[ this](int fd, const std::string& args) {
+			if (args.length() == 0)
+			{
+				
+				
+			}
+			else
+			{
+				/*int value;
+				String mystring = args;
+				value = atoi(*mystring);
+				_chara->setforce();*/
+			}
+		} };
+	auto console = Director::getInstance()->getConsole();
+	console->addCommand(changeforce);
     return true;
 	
 }
+
 void Game::update(float dt) {
 	if (moverderecha) {
 		_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
@@ -132,6 +163,7 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	case EventKeyboard::KeyCode::KEY_S:
 		_chara->setRotation3D(Vec3(i++,j++,k++));
 		break;
+		
 	}
 
 

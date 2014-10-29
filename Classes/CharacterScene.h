@@ -7,6 +7,7 @@ class Character : public cocos2d::Sprite
 {
 
 	cocos2d::PhysicsBody *_body;
+	int force;
 
 public:
 
@@ -29,6 +30,8 @@ public:
 	float getmovement();
 
 	void applyforce();
+
+	void setforce(int a);
 
 	cocos2d::PhysicsBody getbody();
 

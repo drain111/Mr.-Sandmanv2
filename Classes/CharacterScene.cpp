@@ -18,6 +18,7 @@ bool Character::init()
 
 	auto sprite = Sprite3D::create("char/a.obj");
 	sprite->setTexture("char/char.png");
+	force = 1000;
 
 	addChild(sprite);
 	auto contactListener = EventListenerPhysicsContact::create();
@@ -90,6 +91,9 @@ float Character::getmovement() {
 }
 void Character::applyforce() {
 	
-	_body->applyImpulse(Vec2(0, 4000), _body->getPosition());
+	_body->applyImpulse(Vec2(0, force), _body->getPosition());
 	
+}
+void Character::setforce(int a) {
+	force = a;
 }

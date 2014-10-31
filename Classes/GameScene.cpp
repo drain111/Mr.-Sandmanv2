@@ -1,6 +1,7 @@
 #include "MainMenuScene.h"
 #include "GameScene.h"
 #include "CharacterScene.h" 
+#include <string>
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 #include "unistd.h";
 #include "sys/types.h";
@@ -92,9 +93,12 @@ bool Game::init()
     //    you may modify it.
 
     // add a "close" icon to exit the progress. it's an autorelease object
+	auto console = Director::getInstance()->getConsole();
+	console->listenOnTCP(6113);
+	
 	struct Console::Command changeforce = {
-		"label",
-		"Change or print the current label string. Args: [&lt;label string&gt;]",
+		"changeforce",
+		"Cambia la fuerza del salto",
 		[ this](int fd, const std::string& args) {
 			if (args.length() == 0)
 			{
@@ -102,14 +106,12 @@ bool Game::init()
 				
 			}
 			else
-			{
-				/*int value;
-				String mystring = args;
-				value = atoi(*mystring);
-				_chara->setforce();*/
+			{				
+				_chara->setforce(std::stoi(args));
 			}
 		} };
-	auto console = Director::getInstance()->getConsole();
+	
+
 	console->addCommand(changeforce);
     return true;
 	

@@ -17,8 +17,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
-	auto console = director->getConsole();
-	console->listenOnTCP(1234);
+	
     if(!glview) {
         glview = GLView::create("My Game");
         director->setOpenGLView(glview);

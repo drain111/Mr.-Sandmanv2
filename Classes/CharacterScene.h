@@ -12,7 +12,6 @@ class Character : public cocos2d::Sprite
 public:
 
 
-
 	bool onContactBegin(cocos2d::PhysicsContact& contact);
 	cocos2d::PhysicsWorld* mWorld;
 

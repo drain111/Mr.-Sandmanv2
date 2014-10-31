@@ -1,22 +1,20 @@
-#ifndef __CHARACTER_SCENE_H__
-#define __CHARACTER_SCENE_H__
+#ifndef __PLATFORM_SCENE_H__
+#define __PLATFORM_SCENE_H__
 
 #include "cocos2d.h"
-
 USING_NS_CC;
 
 
-class Character : public cocos2d::Sprite
+class Platform : public cocos2d::Sprite
 {
 
 	PhysicsBody *_body;
-	int force;
 
 public:
 
 
 	bool onContactBegin(cocos2d::PhysicsContact& contact);
-	cocos2d::PhysicsWorld* mWorld;
+	PhysicsWorld* mWorld;
 
 	
 	// there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -27,18 +25,13 @@ public:
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
 
-	void GoToCharacterScene(Ref* pSender);
+	void GoToPlatformScene(Ref* pSender);
 
-	float getmovement();
-
-	void applyforce();
-
-	void setforce(int a);
 
 	PhysicsBody getbody();
 
 	// implement the "static create()" method manually
-	CREATE_FUNC(Character);
+	CREATE_FUNC(Platform);
 
 	
 };

@@ -50,8 +50,19 @@ bool Game::init()
 	j = 1;
 	k = 1;
 
-	addChild(_chara);
+	moverderecha = false;
+	moverizq = false;
+	arriba = false;
 	
+
+
+	addChild(_chara);
+	Platform *_plataforma1 = Platform::create();
+	_plataforma1->setScale(10.0);
+	_plataforma1->setPosition3D(Vec3(30.0, -300.0, 0.0));
+	_plataformas = Array::create();
+	_plataformas->addObject( _plataforma1);
+	addChild(_plataforma1);
 	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 2, visibleSize.height)));
 	_chara->setPosition3D(Vec3(90.0, 90.0, 0));
 	_chara->setScale(4.0);
@@ -64,6 +75,7 @@ bool Game::init()
 	
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 	this->scheduleUpdate();
+
 
 
 	/*auto body = PhysicsBody::createCircle(chara->getContentSize().width / 2); // radius

@@ -1,16 +1,20 @@
 #ifndef __GAME_SCENE_H__
 #define __GAME_SCENE_H__
 
+USING_NS_CC;
+
+
 #include "cocos2d.h"
 #include "CharacterScene.h"
+#include "PlatformScene.h"
 
 class Game : public cocos2d::Layer
 {
-	cocos2d::EventKeyboard::KeyCode _pressedKey;
-	bool moverderecha = false;
-	bool moverizq = false;
-	bool arriba = false;
-
+	EventKeyboard::KeyCode _pressedKey;
+	bool moverderecha;
+	bool moverizq;
+	bool arriba;
+	Array *_plataformas;
 	int i;
 	int j;
 	int k;
@@ -19,13 +23,13 @@ public:
 	
 	Character *_chara;
 
-	void setPhysicsWorld(cocos2d::PhysicsWorld* world) {
+	void setPhysicsWorld(PhysicsWorld* world) {
 		mWorld = world;
-		mWorld->setGravity(cocos2d::Vect(0, -9));  // No gravity
+		mWorld->setGravity(Vect(0, -9));  // No gravity
 	}
 
 	bool onContactBegin(cocos2d::PhysicsContact& contact);
-	cocos2d::PhysicsWorld* mWorld;
+	PhysicsWorld* mWorld;
 
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();

@@ -16,11 +16,15 @@ bool Character::init()
 		return false;
 	}
 
-	auto sprite = Sprite3D::create("char/a.obj");
-	sprite->setTexture("char/char.png");
+	auto sprite = Sprite3D::create("char/char.c3t");
 	force = 1000;
 
 	addChild(sprite);
+	auto animation3d = Animation3D::create("char/char.c3t");
+	auto animate3d = Animate3D::create(animation3d);
+	sprite->runAction(RepeatForever::create(animate3d));
+
+
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(Character::onContactBegin, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);

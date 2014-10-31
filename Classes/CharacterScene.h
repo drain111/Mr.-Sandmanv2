@@ -16,7 +16,7 @@ public:
 
 
 	bool onContactBegin(cocos2d::PhysicsContact& contact);
-	cocos2d::PhysicsWorld* mWorld;
+	PhysicsWorld* mWorld;
 
 	
 	// there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -26,8 +26,6 @@ public:
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
-
-	void GoToCharacterScene(Ref* pSender);
 
 	float getmovement();
 

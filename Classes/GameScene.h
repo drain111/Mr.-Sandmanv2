@@ -14,6 +14,7 @@ class Game : public cocos2d::Layer
 	bool moverderecha;
 	bool moverizq;
 	bool arriba;
+	bool rotar;
 	Array *_plataformas;
 	int i;
 	int j;

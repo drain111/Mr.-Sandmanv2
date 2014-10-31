@@ -53,7 +53,7 @@ bool Game::init()
 	moverderecha = false;
 	moverizq = false;
 	arriba = false;
-	
+	rotar = false;
 
 
 	addChild(_chara);
@@ -65,7 +65,7 @@ bool Game::init()
 	addChild(_plataforma1);
 	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 2, visibleSize.height)));
 	_chara->setPosition3D(Vec3(90.0, 90.0, 0));
-	_chara->setScale(4.0);
+	_chara->setScale(2.0);
 	
 	
 
@@ -139,6 +139,11 @@ void Game::update(float dt) {
 			_chara->setPositionX(_chara->getPositionX() + _chara->getmovement());
 
 		}
+		else {
+			if(rotar){
+				_chara->setRotation3D(Vec3(0, j++, 0));
+			}
+		}
 	}
 }
 void Game::menuCloseCallback(Ref* pSender)
@@ -175,7 +180,7 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 		_chara->applyforce();
 		break;
 	case EventKeyboard::KeyCode::KEY_S:
-		_chara->setRotation3D(Vec3(i++,j++,k++));
+		rotar = true;
 		break;
 		
 	}
@@ -194,6 +199,9 @@ void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 	case EventKeyboard::KeyCode::KEY_D:
 		moverizq = false;
 
+		break;
+	case EventKeyboard::KeyCode::KEY_S:
+		rotar = false;
 		break;
 	
 	}

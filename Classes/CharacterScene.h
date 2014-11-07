@@ -33,6 +33,8 @@ public:
 
 	void setforce(int a);
 
+	bool IsXBOXControlConnected();
+
 	PhysicsBody getbody();
 
 	// implement the "static create()" method manually

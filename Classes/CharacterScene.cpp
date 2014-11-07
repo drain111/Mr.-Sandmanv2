@@ -36,7 +36,7 @@ bool Character::init()
 	_body->addMass(30.0);
 	_body->addMoment(2.0);
 	this->setPhysicsBody(_body);
-
+	
 
 	//auto Start = MenuItemImage::create("mainmenu/start.png", "mainmenu/start(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
 
@@ -86,6 +86,7 @@ bool Character::onContactBegin(cocos2d::PhysicsContact& contact) {
 	auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 
 	if (spriteA->getName().compare("A") == 0 && spriteB->getName().compare("B") == 0) {
+		this->_physicsBody->setGravityEnable(false);
 	}
 
 	return true;
@@ -100,4 +101,7 @@ void Character::applyforce() {
 }
 void Character::setforce(int a) {
 	force = a;
+}
+PhysicsBody Character::getbody() {
+	return *_body;
 }

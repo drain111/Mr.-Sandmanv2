@@ -2,6 +2,7 @@
 #include "GameScene.h"
 #include "CharacterScene.h" 
 #include <string>
+#include "CXBOXController.h"
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 #include "unistd.h";
 #include "sys/types.h";
@@ -13,6 +14,7 @@
 #endif
 
 
+CXBOXController* Player1;
 
 USING_NS_CC;
 
@@ -55,8 +57,9 @@ bool Game::init()
 	arriba = false;
 	rotar = false;
 
-
+	
 	addChild(_chara);
+
 	Platform *_plataforma1 = Platform::create();
 	_plataforma1->setScale(10.0);
 	_plataforma1->setPosition3D(Vec3(30.0, -300.0, 0.0));
@@ -75,6 +78,10 @@ bool Game::init()
 	
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 	this->scheduleUpdate();
+
+	//xinput
+
+	Player1 = new CXBOXController(1);
 
 
 
@@ -144,7 +151,38 @@ void Game::update(float dt) {
 				_chara->setRotation3D(Vec3(0, j++, 0));
 			}
 		}
+
 	}
+
+
+
+
+	//XINPUT 
+
+
+	if (Player1->IsConnected()) {
+		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
+		{
+			moverderecha = true;
+		}
+		else {
+			moverderecha = false;
+
+		}
+		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_B)
+		{
+			moverizq = true;
+		}
+		else {
+			moverizq = false;
+
+		}
+	}
+
+
+	if(_chara->getbody.interse)
+
+	
 }
 void Game::menuCloseCallback(Ref* pSender)
 {
@@ -184,7 +222,7 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 		break;
 		
 	}
-
+	
 
 }
 void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
@@ -204,5 +242,13 @@ void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 		rotar = false;
 		break;
 	
+	
+	}
+	if (Player1->IsConnected()) {
+		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
+		{
+			moverderecha = false;
+
+		}
 	}
 }

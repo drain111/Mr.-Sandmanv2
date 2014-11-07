@@ -23,7 +23,7 @@ bool Platform::init()
 	contactListener->onContactBegin = CC_CALLBACK_1(Platform::onContactBegin, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 	
-	_body = PhysicsBody::createCircle(this->getContentSize().width / 2); // radius
+	_body = PhysicsBody::createBox(sprite->getContentSize().width / 2); // radius
 	_body->setContactTestBitmask(true);
 	_body->setDynamic(false);
 	_body->setRotationEnable(false);

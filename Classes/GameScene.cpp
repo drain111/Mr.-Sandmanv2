@@ -22,10 +22,15 @@ Scene* Game::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
     
     // 'layer' is an autorelease object
     auto layer = Game::create();
 	layer->setPhysicsWorld(scene->getPhysicsWorld());
+
+	
+
     // add layer as a child to scene
     scene->addChild(layer);
 
@@ -45,7 +50,19 @@ bool Game::init()
     }
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	
+	
+	
+	/*auto body2 = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
+	auto edgeNode = Node::create();
+	edgeNode->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
+	edgeNode->setPhysicsBody(body2);
+	this->addChild(edgeNode);*/
+	
+	
 	_chara = Character::create();
+	addChild(_chara);
+
 	Point center = Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 
 	i = 1;
@@ -58,19 +75,36 @@ bool Game::init()
 	rotar = false;
 
 	
-	addChild(_chara);
 
 	Platform *_plataforma1 = Platform::create();
 	_plataforma1->setScale(10.0);
 	_plataforma1->setPosition3D(Vec3(30.0, -300.0, 0.0));
 	_plataformas = Array::create();
 	_plataformas->addObject( _plataforma1);
-	addChild(_plataforma1);
 	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 2, visibleSize.height)));
-	_chara->setPosition3D(Vec3(90.0, 90.0, 0));
+	_chara->setPosition3D(Vec3(90.0, 90.0, 0.0));
 	_chara->setScale(2.0);
 	
+	auto _body1 = PhysicsBody::createCircle(60, PHYSICSBODY_MATERIAL_DEFAULT, Vec2(3,3)); // radius
+	_body1->setContactTestBitmask(0);
+	_body1->setDynamic(true);
+	_body1->setRotationEnable(false);
+	_body1->addMass(30.0);
+	_body1->addMoment(2.0);
+	_body1->setPositionOffset(Vec2(0, 50));
+	_chara->setPhysicsBody(_body1);
 	
+	
+
+	auto _body = PhysicsBody::createEdgeBox(Size(200, 200), PHYSICSBODY_MATERIAL_DEFAULT);
+
+	_body->setContactTestBitmask(0);
+	_body->setDynamic(false);
+	_body->setRotationEnable(false);
+	_body->addMass(30.0);
+	_body->addMoment(2.0);
+	_plataforma1->setPhysicsBody(_body);
+	addChild(_plataforma1);
 
 	auto keyboardListener = EventListenerKeyboard::create();
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(Game::onKeyPresed, this);
@@ -79,12 +113,23 @@ bool Game::init()
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 	this->scheduleUpdate();
 
+
+
+
+	//Physics
+
+	auto contactListener = EventListenerPhysicsContact::create();
+	contactListener->onContactBegin = CC_CALLBACK_1(Game::onContactBegin, this);
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
+
+	
+
 	//xinput
 
 	Player1 = new CXBOXController(1);
-
-
-
+	
+	;
+	
 	/*auto body = PhysicsBody::createCircle(chara->getContentSize().width / 2); // radius
 	body->setContactTestBitmask(true);
 	body->setDynamic(true);
@@ -135,7 +180,9 @@ bool Game::init()
     return true;
 	
 }
-
+PhysicsWorld* Game::getPhysicsWorld() {
+	return mWorld;
+}
 void Game::update(float dt) {
 	if (moverderecha) {
 		_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
@@ -153,8 +200,6 @@ void Game::update(float dt) {
 		}
 
 	}
-
-
 
 
 	//XINPUT 
@@ -180,7 +225,6 @@ void Game::update(float dt) {
 	}
 
 
-	if(_chara->getbody.interse)
 
 	
 }
@@ -251,4 +295,15 @@ void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 
 		}
 	}
+}
+bool Game::onContactBegin(cocos2d::PhysicsContact& contact) {
+	// Do something
+
+	auto spriteA = (Sprite*)contact.getShapeA()->getBody()->getNode();
+	auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
+
+	if (spriteA->getName().compare("A") == 0 && spriteB->getName().compare("B") == 0) {
+		
+	}
+	return true;
 }

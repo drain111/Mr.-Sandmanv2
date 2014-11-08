@@ -11,12 +11,12 @@ class Character : public cocos2d::Sprite
 
 	PhysicsBody *_body;
 	int force;
+	Rect *rectangle;
+
 
 public:
 
 
-	bool onContactBegin(cocos2d::PhysicsContact& contact);
-	PhysicsWorld* mWorld;
 
 	
 	// there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -36,6 +36,8 @@ public:
 	bool IsXBOXControlConnected();
 
 	PhysicsBody getbody();
+
+	Rect getrect();
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(Character);

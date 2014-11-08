@@ -15,21 +15,15 @@ bool Platform::init()
 		return false;
 	}
 
-	auto sprite = Sprite3D::create("char/a.obj");
+	sprite = Sprite3D::create("char/a.obj");
 	sprite->setTexture("char/plat.png");
 
 	addChild(sprite);
-	auto contactListener = EventListenerPhysicsContact::create();
-	contactListener->onContactBegin = CC_CALLBACK_1(Platform::onContactBegin, this);
-	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 	
-	_body = PhysicsBody::createBox(sprite->getContentSize().width / 2); // radius
-	_body->setContactTestBitmask(true);
-	_body->setDynamic(false);
-	_body->setRotationEnable(false);
-	_body->addMass(30.0);
-	_body->addMoment(2.0);
-	this->setPhysicsBody(_body);
+
+
+
+	
 
 
 	//auto Start = MenuItemImage::create("mainmenu/start.png", "mainmenu/start(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
@@ -73,14 +67,7 @@ void Platform::menuCloseCallback(Ref* pSender)
 	exit(0);
 #endif
 }
-bool Platform::onContactBegin(cocos2d::PhysicsContact& contact) {
-	// Do something
-
-	auto spriteA = (Sprite*)contact.getShapeA()->getBody()->getNode();
-	auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
-
-	if (spriteA->getName().compare("A") == 0 && spriteB->getName().compare("B") == 0) {
-	}
-
-	return true;
+Size Platform::getsprite() {
+	return sprite->getContentSize();
 }
+

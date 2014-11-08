@@ -9,14 +9,15 @@ class Platform : public cocos2d::Sprite
 {
 
 	PhysicsBody *_body;
+	PhysicsWorld* mWorld;
+	Sprite3D *sprite;
 
 public:
 
 
-	bool onContactBegin(cocos2d::PhysicsContact& contact);
-	PhysicsWorld* mWorld;
 
-	
+
+
 	// there's no 'id' in cpp, so we recommend returning the class instance pointer
 
 	// Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
@@ -27,8 +28,15 @@ public:
 
 	void GoToPlatformScene(Ref* pSender);
 
+	void setPhysicsWorld(PhysicsWorld* world) {
+		mWorld = world;
+		mWorld->setGravity(Vect(0, -9));  // No gravity
+	}
 
 	PhysicsBody getbody();
+
+	Size getsprite();
+
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(Platform);

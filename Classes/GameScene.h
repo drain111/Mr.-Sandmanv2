@@ -24,12 +24,17 @@ public:
 	
 	Character *_chara;
 
-	void setPhysicsWorld(PhysicsWorld* world) {
-		mWorld = world;
-		mWorld->setGravity(Vect(0, -9));  // No gravity
-	}
 
 	bool onContactBegin(cocos2d::PhysicsContact& contact);
+
+
+	void setPhysicsWorld(PhysicsWorld* world) {
+		mWorld = world;
+		mWorld->setGravity(Vect(0, -50));  // No gravity
+	}
+	PhysicsWorld* getPhysicsWorld();
+
+
 	PhysicsWorld* mWorld;
 
     // there's no 'id' in cpp, so we recommend returning the class instance pointer

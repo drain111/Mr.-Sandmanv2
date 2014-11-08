@@ -68,6 +68,7 @@ bool Game::init()
 	i = 1;
 	j = 1;
 	k = 1;
+	free = true;
 
 	moverderecha = false;
 	moverizq = false;
@@ -90,20 +91,22 @@ bool Game::init()
 	_body1->setDynamic(true);
 	_body1->setRotationEnable(false);
 	_body1->addMass(30.0);
-	_body1->addMoment(2.0);
+	_body1->addMoment(0);
 	_body1->setVelocityLimit(500);
+	
 	_body1->setPositionOffset(Vec2(0, 50));
 	_chara->setPhysicsBody(_body1);
 	
 	
 
-	auto _body = PhysicsBody::createEdgeBox(Size(2000, 200), PHYSICSBODY_MATERIAL_DEFAULT);
+	auto _body = PhysicsBody::createEdgeBox(Size(2000, 200), PhysicsMaterial(10, 0, 0.9));
 
 	_body->setContactTestBitmask(0);
 	_body->setDynamic(false);
 	_body->setRotationEnable(false);
 	_body->addMass(30.0);
 	_body->addMoment(2.0);
+	_body->setLinearDamping(0.8);
 	_plataforma1->setPhysicsBody(_body);
 	addChild(_plataforma1);
 
@@ -186,7 +189,7 @@ PhysicsWorld* Game::getPhysicsWorld() {
 void Game::update(float dt) {
 	if (moverderecha) {
 		//_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
-		_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, 0), _chara->getPhysicsBody()->getPosition());
+		_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, 0));
 
 
 	}
@@ -194,7 +197,7 @@ void Game::update(float dt) {
 		if (moverizq)
 		{
 			//_chara->setPositionX(_chara->getPositionX() + _chara->getmovement());
-			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, 0), _chara->getPhysicsBody()->getPosition());
+			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, 0));
 
 		}
 		else {
@@ -205,6 +208,7 @@ void Game::update(float dt) {
 
 	}
 
+	if (_chara->getPhysicsBody()->getVelocity().y == 0) free = true;
 	
 	//XINPUT 
 
@@ -262,7 +266,11 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 		moverizq = true;
 		break;
 	case EventKeyboard::KeyCode::KEY_W:
-		_chara->jump();
+		if (free)
+		{
+			_chara->jump();
+			free = false;
+		}
 		break;
 	case EventKeyboard::KeyCode::KEY_S:
 		rotar = true;
@@ -279,16 +287,12 @@ void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 	{
 	case EventKeyboard::KeyCode::KEY_A:
 		moverderecha = false;
-		_chara->getPhysicsBody()->setVelocity(Vec2(0, 0));
 		_chara->getPhysicsBody()->resetForces();
 
 		break;
 	case EventKeyboard::KeyCode::KEY_D:
 		moverizq = false;
-		_chara->getPhysicsBody()->setVelocity(Vec2(0, 0));
 		_chara->getPhysicsBody()->resetForces();
-
-
 		break;
 	case EventKeyboard::KeyCode::KEY_S:
 		rotar = false;
@@ -296,6 +300,7 @@ void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 	
 	
 	}
+
 	/*if (Player1->IsConnected()) {
 		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
@@ -313,5 +318,8 @@ bool Game::onContactBegin(cocos2d::PhysicsContact& contact) {
 	if (spriteA->getName().compare("A") == 0 && spriteB->getName().compare("B") == 0) {
 		
 	}
+	
+	free = true;
+
 	return true;
 }

@@ -19,7 +19,7 @@ class Game : public cocos2d::Layer
 	int i;
 	int j;
 	int k;
-
+	bool free;
 public:
 	
 	Character *_chara;

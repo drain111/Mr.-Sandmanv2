@@ -56,9 +56,9 @@ void Character::jump() {
 
 void Character::move(String direccion) {
 	
-	/*if(direccion == "izq")
+	/*if(direccion.compare("izq"))
 	this->getPhysicsBody()->applyForce(Vec2(-force, 0), this->getPhysicsBody()->getPosition());
-	if(direccion == "der")
+	if(direccion.compare("der"))
 	this->getPhysicsBody()->applyForce(Vec2(force, 0), this->getPhysicsBody()->getPosition());
 	*/
 }

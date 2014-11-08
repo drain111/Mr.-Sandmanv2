@@ -91,12 +91,13 @@ bool Game::init()
 	_body1->setRotationEnable(false);
 	_body1->addMass(30.0);
 	_body1->addMoment(2.0);
+	_body1->setVelocityLimit(500);
 	_body1->setPositionOffset(Vec2(0, 50));
 	_chara->setPhysicsBody(_body1);
 	
 	
 
-	auto _body = PhysicsBody::createEdgeBox(Size(200, 200), PHYSICSBODY_MATERIAL_DEFAULT);
+	auto _body = PhysicsBody::createEdgeBox(Size(2000, 200), PHYSICSBODY_MATERIAL_DEFAULT);
 
 	_body->setContactTestBitmask(0);
 	_body->setDynamic(false);
@@ -185,11 +186,15 @@ PhysicsWorld* Game::getPhysicsWorld() {
 void Game::update(float dt) {
 	if (moverderecha) {
 		//_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
+		_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, 0), _chara->getPhysicsBody()->getPosition());
+
+
 	}
 	else {
 		if (moverizq)
 		{
 			//_chara->setPositionX(_chara->getPositionX() + _chara->getmovement());
+			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, 0), _chara->getPhysicsBody()->getPosition());
 
 		}
 		else {
@@ -200,7 +205,7 @@ void Game::update(float dt) {
 
 	}
 
-
+	
 	//XINPUT 
 
 
@@ -252,11 +257,9 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	{
 	case EventKeyboard::KeyCode::KEY_A:
 		moverderecha = true;
-		_chara->move("der");
 		break;
 	case EventKeyboard::KeyCode::KEY_D:
 		moverizq = true;
-		_chara->move("izq");
 		break;
 	case EventKeyboard::KeyCode::KEY_W:
 		_chara->jump();
@@ -276,10 +279,15 @@ void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 	{
 	case EventKeyboard::KeyCode::KEY_A:
 		moverderecha = false;
+		_chara->getPhysicsBody()->setVelocity(Vec2(0, 0));
+		_chara->getPhysicsBody()->resetForces();
 
 		break;
 	case EventKeyboard::KeyCode::KEY_D:
 		moverizq = false;
+		_chara->getPhysicsBody()->setVelocity(Vec2(0, 0));
+		_chara->getPhysicsBody()->resetForces();
+
 
 		break;
 	case EventKeyboard::KeyCode::KEY_S:

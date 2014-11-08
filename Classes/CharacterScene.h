@@ -10,13 +10,13 @@ class Character : public cocos2d::Sprite
 {
 
 	PhysicsBody *_body;
-	int force;
 	Rect *rectangle;
 
 
 public:
 
 
+	int force;
 
 	
 	// there's no 'id' in cpp, so we recommend returning the class instance pointer

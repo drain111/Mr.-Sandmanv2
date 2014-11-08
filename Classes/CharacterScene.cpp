@@ -15,7 +15,7 @@ bool Character::init()
 	}
 	
 	auto sprite = Sprite3D::create("char/char.c3t");
-	force = 100000;
+	force = 500000;
 
 	addChild(sprite);
 
@@ -48,11 +48,21 @@ void Character::menuCloseCallback(Ref* pSender)
 float Character::getmovement() {
 	return movement;
 }
-void Character::applyforce() {
-	
+void Character::jump() {
+
 	this->getPhysicsBody()->applyImpulse(Vec2(0, force), this->getPhysicsBody()->getPosition());
 	
 }
+
+void Character::move(String direccion) {
+	
+	/*if(direccion == "izq")
+	this->getPhysicsBody()->applyForce(Vec2(-force, 0), this->getPhysicsBody()->getPosition());
+	if(direccion == "der")
+	this->getPhysicsBody()->applyForce(Vec2(force, 0), this->getPhysicsBody()->getPosition());
+	*/
+}
+
 void Character::setforce(int a) {
 	force = a;
 }

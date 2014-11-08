@@ -29,7 +29,9 @@ public:
 
 	float getmovement();
 
-	void applyforce();
+	void jump();
+
+	void move(String direccion);
 
 	void setforce(int a);
 

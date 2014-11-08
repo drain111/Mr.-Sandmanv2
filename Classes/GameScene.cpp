@@ -14,7 +14,7 @@
 #endif
 
 
-CXBOXController* Player1;
+//CXBOXController* Player1;
 
 USING_NS_CC;
 
@@ -126,9 +126,8 @@ bool Game::init()
 
 	//xinput
 
-	Player1 = new CXBOXController(1);
+	//Player1 = new CXBOXController(1);
 	
-	;
 	
 	/*auto body = PhysicsBody::createCircle(chara->getContentSize().width / 2); // radius
 	body->setContactTestBitmask(true);
@@ -185,12 +184,12 @@ PhysicsWorld* Game::getPhysicsWorld() {
 }
 void Game::update(float dt) {
 	if (moverderecha) {
-		_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
+		//_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
 	}
 	else {
 		if (moverizq)
 		{
-			_chara->setPositionX(_chara->getPositionX() + _chara->getmovement());
+			//_chara->setPositionX(_chara->getPositionX() + _chara->getmovement());
 
 		}
 		else {
@@ -205,7 +204,7 @@ void Game::update(float dt) {
 	//XINPUT 
 
 
-	if (Player1->IsConnected()) {
+/*	if (Player1->IsConnected()) {
 		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
 			moverderecha = true;
@@ -222,7 +221,7 @@ void Game::update(float dt) {
 			moverizq = false;
 
 		}
-	}
+	}*/
 
 
 
@@ -253,13 +252,14 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	{
 	case EventKeyboard::KeyCode::KEY_A:
 		moverderecha = true;
-			
+		_chara->move("der");
 		break;
 	case EventKeyboard::KeyCode::KEY_D:
 		moverizq = true;
+		_chara->move("izq");
 		break;
 	case EventKeyboard::KeyCode::KEY_W:
-		_chara->applyforce();
+		_chara->jump();
 		break;
 	case EventKeyboard::KeyCode::KEY_S:
 		rotar = true;
@@ -288,13 +288,13 @@ void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 	
 	
 	}
-	if (Player1->IsConnected()) {
+	/*if (Player1->IsConnected()) {
 		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
 			moverderecha = false;
 
 		}
-	}
+	}*/
 }
 bool Game::onContactBegin(cocos2d::PhysicsContact& contact) {
 	// Do something

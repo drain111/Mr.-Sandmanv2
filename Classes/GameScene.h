@@ -30,7 +30,7 @@ public:
 
 	void setPhysicsWorld(PhysicsWorld* world) {
 		mWorld = world;
-		mWorld->setGravity(Vect(0, -50));  // No gravity
+		mWorld->setGravity(Vect(0, -980));  // No gravity
 	}
 	PhysicsWorld* getPhysicsWorld();
 

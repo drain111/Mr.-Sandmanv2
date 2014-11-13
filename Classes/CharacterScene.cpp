@@ -53,7 +53,16 @@ void Character::jump() {
 	this->getPhysicsBody()->applyImpulse(Vec2(0, force), this->getPhysicsBody()->getPosition());
 	
 }
+void Character::jumpright() {
 
+	this->getPhysicsBody()->applyImpulse(Vec2(-2*force, 2*force), this->getPhysicsBody()->getPosition());
+
+}
+void Character::jumpleft() {
+
+	this->getPhysicsBody()->applyImpulse(Vec2(2 * force, 2 * force), this->getPhysicsBody()->getPosition());
+
+}
 void Character::move(String direccion) {
 	
 	/*if(direccion.compare("izq"))

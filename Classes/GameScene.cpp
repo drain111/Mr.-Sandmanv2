@@ -99,7 +99,7 @@ bool Game::init()
 	
 	
 
-	auto _body = PhysicsBody::createEdgeBox(Size(2000, 200), PhysicsMaterial(10, 0, 0.9));
+	auto _body = PhysicsBody::createEdgeBox(Size(2000, 1), PhysicsMaterial(10, 0, 0.9),1.0, Vec2(0, 100));
 
 	_body->setContactTestBitmask(0);
 	_body->setDynamic(false);
@@ -187,17 +187,17 @@ PhysicsWorld* Game::getPhysicsWorld() {
 	return mWorld;
 }
 void Game::update(float dt) {
-	if (moverderecha) {
+	if (moverderecha && free) {
 		//_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
-		_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, 0));
+		_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, -200000));
 
 
 	}
 	else {
-		if (moverizq)
+		if (moverizq && free)
 		{
 			//_chara->setPositionX(_chara->getPositionX() + _chara->getmovement());
-			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, 0));
+			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, -200000));
 
 		}
 		else {
@@ -268,7 +268,18 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	case EventKeyboard::KeyCode::KEY_W:
 		if (free)
 		{
-			_chara->jump();
+			if (moverderecha) {
+				_chara->getPhysicsBody()->resetForces();
+				_chara->jumpright();
+			}
+			else if (moverizq) {
+				_chara->getPhysicsBody()->resetForces();
+
+				_chara->jumpleft();
+			}
+			else {
+				_chara->jump();
+			}
 			free = false;
 		}
 		break;

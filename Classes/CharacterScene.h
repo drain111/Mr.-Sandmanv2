@@ -41,6 +41,11 @@ public:
 
 	Rect getrect();
 
+	void jumpright();
+
+	void jumpleft();
+
+
 	// implement the "static create()" method manually
 	CREATE_FUNC(Character);
 

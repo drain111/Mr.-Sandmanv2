@@ -15,7 +15,7 @@ bool Character::init()
 	}
 	
 	auto sprite = Sprite3D::create("char/char.c3t");
-	force = 500000;
+	force = 900000;
 
 	addChild(sprite);
 

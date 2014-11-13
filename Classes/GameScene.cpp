@@ -81,7 +81,7 @@ bool Game::init()
 	_plataforma1->setScale(10.0);
 	_plataforma1->setPosition3D(Vec3(30.0, -300.0, 0.0));
 	_plataformas = Array::create();
-	_plataformas->addObject( _plataforma1);
+	_plataformas->addObject(_plataforma1);
 	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 2, visibleSize.height)));
 	_chara->setPosition3D(Vec3(90.0, 90.0, 0.0));
 	_chara->setScale(2.0);
@@ -109,6 +109,11 @@ bool Game::init()
 	_body->setLinearDamping(0.8);
 	_plataforma1->setPhysicsBody(_body);
 	addChild(_plataforma1);
+
+	createplatform(30.0, 0.0, 0.0, 5.0, 100, 1, 22, 38);
+
+
+
 
 	auto keyboardListener = EventListenerKeyboard::create();
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(Game::onKeyPresed, this);
@@ -186,6 +191,28 @@ bool Game::init()
 PhysicsWorld* Game::getPhysicsWorld() {
 	return mWorld;
 }
+void Game::createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffset, double yoffset){
+	
+	//create platform
+	Platform *_plataforma = Platform::create();
+	_plataforma->setScale(scale);
+	_plataforma->setPosition3D(Vec3(x, y, z));
+	_plataformas->addObject(_plataforma);
+
+
+	//create body
+	auto _body = PhysicsBody::createEdgeBox(Size(bodyscalex, bodyscaley), PhysicsMaterial(10, 0, 0.9), 1.0, Vec2(xoffset, yoffset));
+
+	_body->setContactTestBitmask(0);
+	_body->setDynamic(false);
+	_body->setRotationEnable(false);
+	_body->addMass(30.0);
+	_body->addMoment(2.0);
+	_body->setLinearDamping(0.8);
+	_plataforma->setPhysicsBody(_body);
+	addChild(_plataforma);
+
+}
 void Game::update(float dt) {
 	if (moverderecha && free) {
 		//_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
@@ -207,8 +234,16 @@ void Game::update(float dt) {
 		}
 
 	}
+		//CCObject *aux = _plataformas->getObjectAtIndex(0);
+		//Platform* aux2 =dynamic_cast<Platform*>(aux);
+		
 
-	if (_chara->getPhysicsBody()->getVelocity().y == 0) free = true;
+		//aux2->setPositionX(aux2->getPositionX() + 1);
+		if (_chara->getPhysicsBody()->getVelocity().y == 0) {
+			free = true;
+			_chara->getPhysicsBody()->setVelocityLimit(500);
+
+		}
 	
 	//XINPUT 
 
@@ -257,6 +292,7 @@ void Game::GoToGameScene(Ref* pSender)
 void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	
 	_pressedKey = keycode;
+	if (free)
 	switch (keycode)
 	{
 	case EventKeyboard::KeyCode::KEY_A:
@@ -266,10 +302,12 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 		moverizq = true;
 		break;
 	case EventKeyboard::KeyCode::KEY_W:
-		if (free)
-		{
+		
+			_chara->getPhysicsBody()->setVelocityLimit(800);
+
 			if (moverderecha) {
 				_chara->getPhysicsBody()->resetForces();
+
 				_chara->jumpright();
 			}
 			else if (moverizq) {
@@ -281,15 +319,25 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 				_chara->jump();
 			}
 			free = false;
-		}
+		
 		break;
 	case EventKeyboard::KeyCode::KEY_S:
 		rotar = true;
 		break;
 		
 	}
-	
-
+	else
+	{
+		switch (keycode)
+		{
+		case EventKeyboard::KeyCode::KEY_A:
+			_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, 0));
+			break;
+		case EventKeyboard::KeyCode::KEY_D:
+			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, 0));
+			break;
+		}
+	}
 }
 void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 

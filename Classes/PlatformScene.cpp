@@ -18,6 +18,8 @@ bool Platform::init()
 	sprite = Sprite3D::create("char/a.obj");
 	sprite->setTexture("char/plat.png");
 
+	name = "default";
+
 	addChild(sprite);
 	
 
@@ -70,4 +72,9 @@ void Platform::menuCloseCallback(Ref* pSender)
 Size Platform::getsprite() {
 	return sprite->getContentSize();
 }
-
+void Platform::setname(char name) {
+	name = name;
+}
+char Platform::getname(){
+	return *name;
+}

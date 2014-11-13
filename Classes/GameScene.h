@@ -15,7 +15,7 @@ class Game : public cocos2d::Layer
 	bool moverizq;
 	bool arriba;
 	bool rotar;
-	Array *_plataformas;
+	Array* _plataformas;
 	int i;
 	int j;
 	int k;
@@ -53,6 +53,7 @@ public:
 	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
 	void update(float dt);
 
+	void createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffste, double yoffset);
 
 	struct Command {
 		std::string name;

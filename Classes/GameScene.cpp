@@ -3,6 +3,7 @@
 #include "CharacterScene.h" 
 #include <string>
 #include "CXBOXController.h"
+#include "PauseScene.h"
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 #include "unistd.h";
 #include "sys/types.h";
@@ -49,13 +50,6 @@ bool Game::init()
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	
-	
-	
-	/*auto body2 = PhysicsBody::createEdgeBox(visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3);
-	auto edgeNode = Node::create();
-	edgeNode->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
-	edgeNode->setPhysicsBody(body2);
-	this->addChild(edgeNode);*/
 	
 	
 	_chara = Character::create();
@@ -127,33 +121,7 @@ bool Game::init()
 	Player1 = new CXBOXController(1);
 	
 	
-	/*auto body = PhysicsBody::createCircle(chara->getContentSize().width / 2); // radius
-	body->setContactTestBitmask(true);
-	body->setDynamic(true);
-	chara->setPhysicsBody(body);*/
 
-	//auto Start = MenuItemImage::create("mainmenu/start.png", "mainmenu/start(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
-
-	//auto Load = MenuItemImage::create("mainmenu/load.png", "mainmenu/load(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
-	
-	//auto Exit = MenuItemImage::create("mainmenu/exit.png", "mainmenu/exit(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
-	
-	//auto menu = Menu::create(Start, Load, Exit, NULL);
-
-	//menu->alignItemsVerticallyWithPadding(visibleSize.height / 4);
-   // this->addChild(menu, 1);
-
-	//auto bg = Sprite::create("mainmenu/bg.png");
-
-	//bg->setPosition(Point((visibleSize.width/2), (visibleSize.height/2)));
-
-	//this->addChild(bg, 0);
-
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
-
-    // add a "close" icon to exit the progress. it's an autorelease object
 	auto console = Director::getInstance()->getConsole();
 	console->listenOnTCP(6113);
 	
@@ -278,11 +246,10 @@ void Game::menuCloseCallback(Ref* pSender)
     exit(0);
 #endif
 }
-void Game::GoToGameScene(Ref* pSender) 
+void Game::GoToPauseScene(Ref* pSender) 
 {
-	//auto scene = GameScene::createScene();
-    
-   // Director::getInstance()->replaceScene(TransitionFade::create(1.0,scene));
+	auto scene = PauseScene::createScene();
+	Director::getInstance()->pushScene(scene);
 }
 void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	
@@ -319,7 +286,9 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	case EventKeyboard::KeyCode::KEY_S:
 		rotar = true;
 		break;
-		
+	case EventKeyboard::KeyCode::KEY_ENTER:
+		GoToPauseScene(this);
+		break;
 	}
 	else
 	{
@@ -330,6 +299,9 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 			break;
 		case EventKeyboard::KeyCode::KEY_D:
 			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, 0));
+			break;
+		case EventKeyboard::KeyCode::KEY_ENTER:
+			GoToPauseScene(this);
 			break;
 		}
 	}

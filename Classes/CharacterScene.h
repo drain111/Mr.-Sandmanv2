@@ -10,7 +10,6 @@ class Character : public cocos2d::Sprite
 {
 
 	PhysicsBody *_body;
-	Rect *rectangle;
 
 
 public:
@@ -39,7 +38,6 @@ public:
 
 	PhysicsBody getbody();
 
-	Rect getrect();
 
 	void jumpright();
 

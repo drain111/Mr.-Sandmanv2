@@ -14,7 +14,7 @@
 #endif
 
 
-//CXBOXController* Player1;
+CXBOXController* Player1;
 
 USING_NS_CC;
 
@@ -23,7 +23,6 @@ Scene* Game::createScene()
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-
     
     // 'layer' is an autorelease object
     auto layer = Game::create();
@@ -82,28 +81,18 @@ bool Game::init()
 	_plataforma1->setPosition3D(Vec3(30.0, -300.0, 0.0));
 	_plataformas = Array::create();
 	_plataformas->retain();
-	_plataforma1->setTag(0);
 	_plataformas->addObject(_plataforma1);
 	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 2, visibleSize.height)));
 	_chara->setPosition3D(Vec3(90.0, 90.0, 0.0));
 	_chara->setScale(2.0);
 	
-	auto _body1 = PhysicsBody::createCircle(60, PHYSICSBODY_MATERIAL_DEFAULT, Vec2(3,3)); // radius
-	_body1->setContactTestBitmask(0);
-	_body1->setDynamic(true);
-	_body1->setRotationEnable(false);
-	_body1->addMass(30.0);
-	_body1->addMoment(0);
-	_body1->setVelocityLimit(500);
 	
-	_body1->setPositionOffset(Vec2(0, 50));
-	_chara->setPhysicsBody(_body1);
 	
 	
 
 	auto _body = PhysicsBody::createEdgeBox(Size(2000, 1), PhysicsMaterial(10, 0, 0.9),1.0, Vec2(0, 100));
 
-	_body->setContactTestBitmask(0);
+	_body->setContactTestBitmask(true);
 	_body->setDynamic(false);
 	_body->setRotationEnable(false);
 	_body->addMass(30.0);
@@ -126,7 +115,6 @@ bool Game::init()
 
 
 
-
 	//Physics
 
 	auto contactListener = EventListenerPhysicsContact::create();
@@ -137,7 +125,7 @@ bool Game::init()
 
 	//xinput
 
-	//Player1 = new CXBOXController(1);
+	Player1 = new CXBOXController(1);
 	
 	
 	/*auto body = PhysicsBody::createCircle(chara->getContentSize().width / 2); // radius
@@ -198,15 +186,15 @@ void Game::createplatform(double x, double y, double z, double scale, double bod
 	//create platform
 	Platform *_plataforma = Platform::create();
 	_plataforma->setScale(scale);
+	_plataforma->setName("plataforma");
 	_plataforma->setPosition3D(Vec3(x, y, z));
-	//_plataforma->setTag(1);
 	_plataformas->addObject(_plataforma);
 
 
 	//create body
 	auto _body = PhysicsBody::createEdgeBox(Size(bodyscalex, bodyscaley), PhysicsMaterial(10, 0, 0.9), 1.0, Vec2(xoffset, yoffset));
 
-	_body->setContactTestBitmask(0);
+	_body->setContactTestBitmask(true);
 	_body->setDynamic(false);
 	_body->setRotationEnable(false);
 	_body->addMass(30.0);
@@ -220,7 +208,6 @@ void Game::update(float dt) {
 	if (moverderecha && free) {
 		//_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
 		_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, -200000));
-
 
 	}
 	else {
@@ -242,6 +229,7 @@ void Game::update(float dt) {
 		
 
 		aux2->setPositionX(aux2->getPositionX() + 1);
+		
 		if (_chara->getPhysicsBody()->getVelocity().y == 0) {
 			free = true;
 			_chara->getPhysicsBody()->setVelocityLimit(500);
@@ -251,7 +239,7 @@ void Game::update(float dt) {
 	//XINPUT 
 
 
-/*	if (Player1->IsConnected()) {
+if (Player1->IsConnected()) {
 		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
 			moverderecha = true;
@@ -268,7 +256,7 @@ void Game::update(float dt) {
 			moverizq = false;
 
 		}
-	}*/
+	}
 
 
 
@@ -363,25 +351,29 @@ void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 	
 	}
 
-	/*if (Player1->IsConnected()) {
+	if (Player1->IsConnected()) {
 		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
 			moverderecha = false;
 
 		}
-	}*/
+	}
 }
 bool Game::onContactBegin(cocos2d::PhysicsContact& contact) {
 	// Do something
 
+
+
+
+
+
 	auto spriteA = (Sprite*)contact.getShapeA()->getBody()->getNode();
 	auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 
-	if (spriteA->getName().compare("A") == 0 && spriteB->getName().compare("B") == 0) {
-		
+	if (spriteA->getName().compare("character") == 0 && spriteB->getName().compare("plataforma") == 0) {
+		_chara->setPositionX(_chara->getPositionX() + 1);
+
 	}
 	
-	free = true;
-
 	return true;
 }

@@ -19,11 +19,21 @@ bool Character::init()
 
 	addChild(sprite);
 
+	setName("character");
 
 	auto animation3d = Animation3D::create("char/char.c3t");
 	auto animate3d = Animate3D::create(animation3d);
 	sprite->runAction(RepeatForever::create(animate3d));
-	
+	auto _body1 = PhysicsBody::createCircle(30, PHYSICSBODY_MATERIAL_DEFAULT, Vec2(3, 3)); // radius
+	_body1->setContactTestBitmask(true);
+	_body1->setDynamic(true);
+	_body1->setRotationEnable(false);
+	_body1->addMass(30.0);
+	_body1->addMoment(0);
+	_body1->setVelocityLimit(500);
+
+	_body1->setPositionOffset(Vec2(0, 50));
+	setPhysicsBody(_body1);
 	
 	
 	
@@ -77,7 +87,4 @@ void Character::setforce(int a) {
 }
 PhysicsBody Character::getbody() {
 	return *_body;
-}
-Rect Character::getrect() {
-	return *rectangle;
 }

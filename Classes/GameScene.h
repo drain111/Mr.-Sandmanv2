@@ -7,6 +7,7 @@ USING_NS_CC;
 #include "cocos2d.h"
 #include "CharacterScene.h"
 #include "PlatformScene.h"
+#include "CXBOXController.h"
 
 class Game : public cocos2d::Layer
 {
@@ -20,6 +21,9 @@ class Game : public cocos2d::Layer
 	int j;
 	int k;
 	bool free;
+	CXBOXController* Player1;
+
+
 public:
 	
 	Character *_chara;

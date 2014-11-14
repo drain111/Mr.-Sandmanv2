@@ -14,7 +14,6 @@
 #endif
 
 
-CXBOXController* Player1;
 
 USING_NS_CC;
 
@@ -82,7 +81,7 @@ bool Game::init()
 	_plataformas = Array::create();
 	_plataformas->retain();
 	_plataformas->addObject(_plataforma1);
-	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 2, visibleSize.height)));
+	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 4, visibleSize.height *2)));
 	_chara->setPosition3D(Vec3(90.0, 90.0, 0.0));
 	_chara->setScale(2.0);
 	
@@ -218,6 +217,8 @@ void Game::update(float dt) {
 
 		}
 		else {
+			_chara->getPhysicsBody()->resetForces();
+
 			if(rotar){
 				_chara->setRotation3D(Vec3(0, j++, 0));
 			}
@@ -242,9 +243,11 @@ void Game::update(float dt) {
 if (Player1->IsConnected()) {
 		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
+
 			moverderecha = true;
 		}
 		else {
+
 			moverderecha = false;
 
 		}
@@ -253,6 +256,7 @@ if (Player1->IsConnected()) {
 			moverizq = true;
 		}
 		else {
+
 			moverizq = false;
 
 		}
@@ -351,13 +355,6 @@ void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 	
 	}
 
-	if (Player1->IsConnected()) {
-		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
-		{
-			moverderecha = false;
-
-		}
-	}
 }
 bool Game::onContactBegin(cocos2d::PhysicsContact& contact) {
 	// Do something

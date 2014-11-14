@@ -11,7 +11,6 @@ class Platform : public cocos2d::Sprite
 	PhysicsBody *_body;
 	PhysicsWorld* mWorld;
 	Sprite3D *sprite;
-	char *name;
 
 
 public:
@@ -39,8 +38,6 @@ public:
 
 	Size getsprite();
 
-	void setname(char name);
-	char getname();
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(Platform);

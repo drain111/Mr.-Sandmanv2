@@ -51,7 +51,8 @@ bool Game::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	
 	
-	
+#pragma region Creaciondevariables
+
 	_chara = Character::create();
 	addChild(_chara);
 
@@ -67,6 +68,8 @@ bool Game::init()
 	arriba = false;
 	rotar = false;
 
+#pragma endregion
+
 	
 
 	Platform *_plataforma1 = Platform::create();
@@ -75,7 +78,7 @@ bool Game::init()
 	_plataformas = Array::create();
 	_plataformas->retain();
 	_plataformas->addObject(_plataforma1);
-	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 4, visibleSize.height *2)));
+	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 4, visibleSize.height )));
 	_chara->setPosition3D(Vec3(90.0, 90.0, 0.0));
 	_chara->setScale(2.0);
 	
@@ -102,7 +105,6 @@ bool Game::init()
 	auto keyboardListener = EventListenerKeyboard::create();
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(Game::onKeyPresed, this);
 	keyboardListener->onKeyReleased = CC_CALLBACK_2(Game::onKeyReleased, this);
-	
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 	this->scheduleUpdate();
 
@@ -120,7 +122,10 @@ bool Game::init()
 
 	Player1 = new CXBOXController(1);
 	
-	
+	/*auto Start = MenuItemImage::create("mainmenu/start.png", "mainmenu/start(click).png", CC_CALLBACK_1(Game::GoToPauseScene, this));
+	auto menu = Menu::create(Start, NULL);
+	menu->alignItemsVerticallyWithPadding(visibleSize.height / 2);
+	this->addChild(menu, 1);*/
 
 	auto console = Director::getInstance()->getConsole();
 	console->listenOnTCP(6113);
@@ -185,7 +190,6 @@ void Game::update(float dt) {
 
 		}
 		else {
-			_chara->getPhysicsBody()->resetForces();
 
 			if(rotar){
 				_chara->setRotation3D(Vec3(0, j++, 0));
@@ -209,23 +213,24 @@ void Game::update(float dt) {
 
 
 if (Player1->IsConnected()) {
+	//Player1->Vibrate(65535, 10);
 		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
 
 			moverderecha = true;
 		}
-		else {
+		
+		else if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_B) {
 
-			moverderecha = false;
-
-		}
-		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_B)
-		{
 			moverizq = true;
-		}
-		else {
 
+		}
+		
+		else if (!Player1->GetState().Gamepad.wButtons & XINPUT_KEYSTROKE_KEYDOWN)
+		{
+			moverderecha = false;
 			moverizq = false;
+			_chara->getPhysicsBody()->resetForces();
 
 		}
 	}
@@ -246,7 +251,7 @@ void Game::menuCloseCallback(Ref* pSender)
     exit(0);
 #endif
 }
-void Game::GoToPauseScene(Ref* pSender) 
+void Game::GoToPauseScene() 
 {
 	auto scene = PauseScene::createScene();
 	Director::getInstance()->pushScene(scene);
@@ -286,8 +291,8 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	case EventKeyboard::KeyCode::KEY_S:
 		rotar = true;
 		break;
-	case EventKeyboard::KeyCode::KEY_ENTER:
-		GoToPauseScene(this);
+	case EventKeyboard::KeyCode::KEY_Q:
+		GoToPauseScene();
 		break;
 	}
 	else
@@ -300,8 +305,8 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 		case EventKeyboard::KeyCode::KEY_D:
 			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, 0));
 			break;
-		case EventKeyboard::KeyCode::KEY_ENTER:
-			GoToPauseScene(this);
+		case EventKeyboard::KeyCode::KEY_Q:
+			GoToPauseScene();
 			break;
 		}
 	}

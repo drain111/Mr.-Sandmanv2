@@ -50,7 +50,7 @@ public:
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
     
-	void GoToPauseScene(Ref* pSender);
+	void GoToPauseScene();
 
 	void onKeyPresed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
 

@@ -15,7 +15,7 @@ class Game : public cocos2d::Layer
 	bool moverizq;
 	bool arriba;
 	bool rotar;
-	Array* _plataformas;
+	cocos2d::Array *_plataformas;
 	int i;
 	int j;
 	int k;

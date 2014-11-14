@@ -81,6 +81,8 @@ bool Game::init()
 	_plataforma1->setScale(10.0);
 	_plataforma1->setPosition3D(Vec3(30.0, -300.0, 0.0));
 	_plataformas = Array::create();
+	_plataformas->retain();
+	_plataforma1->setTag(0);
 	_plataformas->addObject(_plataforma1);
 	this->runAction(Follow::create(_chara, Rect(center.x - visibleSize.width, center.y - visibleSize.height, visibleSize.width * 2, visibleSize.height)));
 	_chara->setPosition3D(Vec3(90.0, 90.0, 0.0));
@@ -197,6 +199,7 @@ void Game::createplatform(double x, double y, double z, double scale, double bod
 	Platform *_plataforma = Platform::create();
 	_plataforma->setScale(scale);
 	_plataforma->setPosition3D(Vec3(x, y, z));
+	//_plataforma->setTag(1);
 	_plataformas->addObject(_plataforma);
 
 
@@ -234,11 +237,11 @@ void Game::update(float dt) {
 		}
 
 	}
-		//CCObject *aux = _plataformas->getObjectAtIndex(0);
-		//Platform* aux2 =dynamic_cast<Platform*>(aux);
+		auto *aux = _plataformas->getObjectAtIndex(1);
+		Platform* aux2 =dynamic_cast<Platform*>(aux);
 		
 
-		//aux2->setPositionX(aux2->getPositionX() + 1);
+		aux2->setPositionX(aux2->getPositionX() + 1);
 		if (_chara->getPhysicsBody()->getVelocity().y == 0) {
 			free = true;
 			_chara->getPhysicsBody()->setVelocityLimit(500);

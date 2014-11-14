@@ -13,6 +13,7 @@ class Platform : public cocos2d::Sprite
 	Sprite3D *sprite;
 	char *name;
 
+
 public:
 
 

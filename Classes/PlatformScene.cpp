@@ -20,36 +20,6 @@ bool Platform::init()
 
 
 	addChild(sprite);
-	
-
-
-
-	
-
-
-	//auto Start = MenuItemImage::create("mainmenu/start.png", "mainmenu/start(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
-
-	//auto Load = MenuItemImage::create("mainmenu/load.png", "mainmenu/load(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
-
-	//auto Exit = MenuItemImage::create("mainmenu/exit.png", "mainmenu/exit(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
-
-	//auto menu = Menu::create(Start, Load, Exit, NULL);
-
-	//menu->alignItemsVerticallyWithPadding(visibleSize.height / 4);
-	// this->addChild(menu, 1);
-
-	//auto bg = Sprite::create("mainmenu/bg.png");
-
-	//bg->setPosition(Point((visibleSize.width/2), (visibleSize.height/2)));
-
-	//this->addChild(bg, 0);
-
-	/////////////////////////////
-	// 2. add a menu item with "X" image, which is clicked to quit the program
-	//    you may modify it.
-
-	// add a "close" icon to exit the progress. it's an autorelease object
-
 
 	return true;
 }

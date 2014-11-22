@@ -1,8 +1,8 @@
 #include "MainMenuScene.h"
 #include "GameScene.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
-
 Scene* MainMenu::createScene()
 {
     // 'scene' is an autorelease object
@@ -27,7 +27,10 @@ bool MainMenu::init()
     {
         return false;
     }
-    
+	//importar y reproducir musicas
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("musica menu.mp3");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("musica menu.mp3",true);
+
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -47,13 +50,6 @@ bool MainMenu::init()
 	bg->setPosition(Point((visibleSize.width/2), (visibleSize.height/2)));
 
 	this->addChild(bg, 0);
-
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
-
-    // add a "close" icon to exit the progress. it's an autorelease object
-   
     
     return true;
 }
@@ -75,7 +71,7 @@ void MainMenu::menuCloseCallback(Ref* pSender)
 void MainMenu::GoToGameScene(Ref* pSender) 
 {
 	auto scene = Game::createScene();
-    
+	CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);//parar la musica del menu al pasar al juego
    Director::getInstance()->replaceScene(TransitionFade::create(1.0,scene));
 }
 void MainMenu::ExitGame(Ref* pSender)

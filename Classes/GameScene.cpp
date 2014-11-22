@@ -121,11 +121,6 @@ bool Game::init()
 	//xinput
 
 	Player1 = new CXBOXController(1);
-	
-	/*auto Start = MenuItemImage::create("mainmenu/start.png", "mainmenu/start(click).png", CC_CALLBACK_1(Game::GoToPauseScene, this));
-	auto menu = Menu::create(Start, NULL);
-	menu->alignItemsVerticallyWithPadding(visibleSize.height / 2);
-	this->addChild(menu, 1);*/
 
 	auto console = Director::getInstance()->getConsole();
 	console->listenOnTCP(6113);
@@ -212,7 +207,7 @@ void Game::update(float dt) {
 
 
 if (Player1->IsConnected()) {
-	//Player1->Vibrate(65535, 10);
+	/*//Player1->Vibrate(65535, 10);
 		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
 
@@ -231,7 +226,7 @@ if (Player1->IsConnected()) {
 			moverizq = false;
 			_chara->getPhysicsBody()->resetForces();
 
-		}
+		}*/
 	}
 
 

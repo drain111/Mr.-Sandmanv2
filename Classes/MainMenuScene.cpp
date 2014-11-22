@@ -35,7 +35,7 @@ bool MainMenu::init()
 
 	auto Load = MenuItemImage::create("mainmenu/load.png", "mainmenu/load(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
 	
-	auto Exit = MenuItemImage::create("mainmenu/exit.png", "mainmenu/exit(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
+	auto Exit = MenuItemImage::create("mainmenu/exit.png", "mainmenu/exit(click).png", CC_CALLBACK_1(MainMenu::ExitGame,this));
 	
 	auto menu = Menu::create(Start, Load, Exit, NULL);
 
@@ -77,4 +77,8 @@ void MainMenu::GoToGameScene(Ref* pSender)
 	auto scene = Game::createScene();
     
    Director::getInstance()->replaceScene(TransitionFade::create(1.0,scene));
+}
+void MainMenu::ExitGame(Ref* pSender)
+{
+	exit(0);
 }

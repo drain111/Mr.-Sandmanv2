@@ -31,6 +31,7 @@ public:
 
 	bool onContactBegin(cocos2d::PhysicsContact& contact);
 
+	
 
 	void setPhysicsWorld(PhysicsWorld* world) {
 		mWorld = world;

@@ -20,6 +20,7 @@ public:
     
 	void GoToGameScene(Ref* pSender);
 
+	void ExitGame(Ref* pSender);
 
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenu);

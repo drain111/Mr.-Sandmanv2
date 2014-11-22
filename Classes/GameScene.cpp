@@ -86,14 +86,14 @@ bool Game::init()
 	
 	
 
-	auto _body = PhysicsBody::createEdgeBox(Size(2000, 1), PhysicsMaterial(10, 0, 0.9),1.0, Vec2(0, 100));
+	auto _body = PhysicsBody::createEdgeBox(Size(2000, 1), PhysicsMaterial(10, 0, 0.9f),1.0, Vec2(0, 100));
 
 	_body->setContactTestBitmask(true);
 	_body->setDynamic(false);
 	_body->setRotationEnable(false);
 	_body->addMass(30.0);
 	_body->addMoment(2.0);
-	_body->setLinearDamping(0.8);
+	_body->setLinearDamping(0.8f);
 	_plataforma1->setPhysicsBody(_body);
 	addChild(_plataforma1);
 
@@ -164,14 +164,14 @@ void Game::createplatform(double x, double y, double z, double scale, double bod
 
 
 	//create body
-	auto _body = PhysicsBody::createEdgeBox(Size(bodyscalex, bodyscaley), PhysicsMaterial(10, 0, 0.9), 1.0, Vec2(xoffset, yoffset));
+	auto _body = PhysicsBody::createEdgeBox(Size(bodyscalex, bodyscaley), PhysicsMaterial(10, 0, 0.9f), 1.0, Vec2(xoffset, yoffset));
 
 	_body->setContactTestBitmask(true);
 	_body->setDynamic(false);
 	_body->setRotationEnable(false);
 	_body->addMass(30.0);
 	_body->addMoment(2.0);
-	_body->setLinearDamping(0.8);
+	_body->setLinearDamping(0.8f);
 	_plataforma->setPhysicsBody(_body);
 	addChild(_plataforma);
 
@@ -197,11 +197,10 @@ void Game::update(float dt) {
 		}
 
 	}
-		auto *aux = _plataformas->getObjectAtIndex(1);
-		Platform* aux2 =dynamic_cast<Platform*>(aux);
-		
+		auto *aux = dynamic_cast<Platform*>(_plataformas->getObjectAtIndex(1));
 
-		aux2->setPositionX(aux2->getPositionX() + 1);
+
+		aux->setPositionX(aux->getPositionX() + 1);
 		
 		if (_chara->getPhysicsBody()->getVelocity().y == 0) {
 			free = true;

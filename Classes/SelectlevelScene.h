@@ -20,6 +20,9 @@ class Selectlevel : public cocos2d::Layer
 	CXBOXController* Player1;
 	Camera *camera;
 	bool selecciondenivel;
+	int selectedtag = 0;
+	bool changescene = false;
+	Sprite3D *casafinal;
 
 public:
 	

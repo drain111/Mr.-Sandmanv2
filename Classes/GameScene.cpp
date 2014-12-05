@@ -202,7 +202,7 @@ void Game::update(float dt) {
 		}
 
 	}
-		auto *aux = dynamic_cast<Platform*>(_plataformas->getObjectAtIndex(1));
+		auto *aux = dynamic_cast<Platform*>(_plataformas->getObjectAtIndex(0));
 
 
 		//aux->setPositionX(aux->getPositionX() + 1);

@@ -62,7 +62,8 @@ bool Selectlevel::init()
 	arriba = false;
 	rotar = false;
 	selecciondenivel = false;
-
+	selectedtag = 0;
+	changescene = false;
 #pragma endregion
 
 	camera = Camera::createPerspective(60,visibleSize.width / visibleSize.height,1, 1000);
@@ -177,12 +178,12 @@ PhysicsWorld* Selectlevel::getPhysicsWorld() {
 }
 
 void Selectlevel::update(float dt) {
-	if (moverderecha && free) {
+	if (moverderecha && free && !changescene) {
 		_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, -200000));
 
 	}
 	else {
-		if (moverizq && free)
+		if (moverizq && free && !changescene)
 		{
 			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, -200000));
 
@@ -351,8 +352,10 @@ bool Selectlevel::onContactBegin(cocos2d::PhysicsContact& contact) {
 }
 void Selectlevel::GoToGameScene()
 {
-	
 	if (selectedtag == 0 ) {
+		this->cleanup();
+
+		_houses->autorelease();
 		auto scene = Game::createScene();
 		Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
 	}

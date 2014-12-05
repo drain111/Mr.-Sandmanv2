@@ -3,25 +3,33 @@
 
 USING_NS_CC;
 
-
-
 AppDelegate::AppDelegate() {
 
 }
 
-AppDelegate::~AppDelegate() 
+AppDelegate::~AppDelegate()
 {
 }
 
+//if you want a different context,just modify the value of glContextAttrs
+//it will takes effect on all platforms
+void AppDelegate::initGLContextAttrs()
+{
+	//set OpenGL context attributions,now can only set six attributions:
+	//red,green,blue,alpha,depth,stencil
+	GLContextAttrs glContextAttrs = { 8, 8, 8, 8, 100000, 80 };
+	GLView::setGLContextAttrs(glContextAttrs);
+}
+
 bool AppDelegate::applicationDidFinishLaunching() {
-    // initialize director
-    auto director = Director::getInstance();
-    auto glview = director->getOpenGLView();
-	
-    if(!glview) {
-        glview = GLView::create("My Game");
-        director->setOpenGLView(glview);
-    }
+	// initialize director
+	auto director = Director::getInstance();
+	auto glview = director->getOpenGLView();
+	if (!glview) {
+		glview = GLViewImpl::create("My Game");
+		director->setOpenGLView(glview);
+	}
+	initGLContextAttrs();
 	auto fileUtils = FileUtils::getInstance();
 	 std::vector<std::string> resDirOrders;
  
@@ -42,7 +50,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto scene = MainMenu::createScene();
     
 	director->runWithScene(scene);
- // 
+
 
 
 

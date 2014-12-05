@@ -1,28 +1,25 @@
-#ifndef __GAME_SCENE_H__
-#define __GAME_SCENE_H__
-
-USING_NS_CC;
-
+#ifndef __SELECTLEVEL_SCENE_H__
+#define __SELECTLEVEL_SCENE_H__
 
 #include "cocos2d.h"
 #include "CharacterScene.h"
 #include "PlatformScene.h"
 #include "CXBOXController.h"
 
-class Game : public cocos2d::Layer
+USING_NS_CC;
+
+class Selectlevel : public cocos2d::Layer
 {
 	EventKeyboard::KeyCode _pressedKey;
 	bool moverderecha;
 	bool moverizq;
 	bool arriba;
 	bool rotar;
-	cocos2d::Array *_plataformas;
-	int i;
-	int j;
-	int k;
 	bool free;
+	Array *_houses;
 	CXBOXController* Player1;
 	Camera *camera;
+	bool selecciondenivel;
 
 public:
 	
@@ -54,11 +51,13 @@ public:
 	void GoToPauseScene();
 
 	void onKeyPresed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
+	
+	void createhouse(int x, int tag);
 
 	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
 	void update(float dt);
 
-	void createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffste, double yoffset);
+	void GoToGameScene();
 
 	struct Command {
 		std::string name;
@@ -67,7 +66,7 @@ public:
 	};
 
     // implement the "static create()" method manually
-    CREATE_FUNC(Game);
+    CREATE_FUNC(Selectlevel);
 
 };
 

@@ -15,15 +15,16 @@ bool Character::init()
 	}
 	
 	auto sprite = Sprite3D::create("char/char.c3t");
+	sprite->setPosition3D(Vec3(-145, 25, 0));
 	force = 900000;
 
 	addChild(sprite);
 
 	setName("character");
 
-	auto animation3d = Animation3D::create("char/char.c3t");
-	auto animate3d = Animate3D::create(animation3d);
-	sprite->runAction(RepeatForever::create(animate3d));
+	//auto animation3d = Animation3D::create("char/char.c3t");
+	//auto animate3d = Animate3D::create(animation3d);
+	//sprite->runAction(RepeatForever::create(animate3d));
 	auto _body1 = PhysicsBody::createCircle(30, PHYSICSBODY_MATERIAL_DEFAULT, Vec2(3, 3)); // radius
 	_body1->setContactTestBitmask(true);
 	_body1->setDynamic(true);
@@ -35,8 +36,9 @@ bool Character::init()
 	_body1->setPositionOffset(Vec2(0, 50));
 	setPhysicsBody(_body1);
 	
-	
-	
+	//spotlight = SpotLight::create(Vec3(0.0f, -1.0f, 0.0f), Vec3(0.0f, 400.0f, 0.0f), Color3B(255, 255, 0), 50.0f, 90.0f, 500.0f);
+	//addChild(spotlight);
+
 	return true;
 }
 

@@ -11,9 +11,9 @@ class Character : public cocos2d::Sprite
 
 	PhysicsBody *_body;
 
-
 public:
 
+	SpotLight *spotlight;
 
 	int force;
 

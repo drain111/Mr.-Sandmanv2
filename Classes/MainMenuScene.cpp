@@ -1,5 +1,5 @@
 #include "MainMenuScene.h"
-#include "GameScene.h"
+#include "Selectlevelscene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -70,7 +70,7 @@ void MainMenu::menuCloseCallback(Ref* pSender)
 }
 void MainMenu::GoToGameScene(Ref* pSender) 
 {
-	auto scene = Game::createScene();
+	auto scene = Selectlevel::createScene();
 	CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);//parar la musica del menu al pasar al juego
    Director::getInstance()->replaceScene(TransitionFade::create(1.0,scene));
 }

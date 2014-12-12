@@ -16,6 +16,7 @@ public:
 	SpotLight *spotlight;
 
 	int force;
+	int  vidas;
 
 	
 	// there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -33,7 +34,6 @@ public:
 	void move(String direccion);
 
 	void setforce(int a);
-
 	bool IsXBOXControlConnected();
 
 	PhysicsBody getbody();

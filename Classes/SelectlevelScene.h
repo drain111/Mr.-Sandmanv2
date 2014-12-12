@@ -5,6 +5,7 @@
 #include "CharacterScene.h"
 #include "PlatformScene.h"
 #include "CXBOXController.h"
+#include "HUD.h"
 
 USING_NS_CC;
 
@@ -23,6 +24,8 @@ class Selectlevel : public cocos2d::Layer
 	int selectedtag = 0;
 	bool changescene = false;
 	Sprite3D *casafinal;
+	CCUserDefault *def;
+	HUD *hud;
 
 public:
 	
@@ -61,6 +64,9 @@ public:
 	void update(float dt);
 
 	void GoToGameScene();
+
+	void goToMainMenu();
+	void Restart();
 
 	struct Command {
 		std::string name;

@@ -18,7 +18,8 @@ public:
     void menuCloseCallback(cocos2d::Ref* pSender);
     
 	void GoToGameScene(Ref* pSender);
-
+	void LoadGameScene(Ref* pSender);
+	
 	void ExitGame(Ref* pSender);
 
     // implement the "static create()" method manually

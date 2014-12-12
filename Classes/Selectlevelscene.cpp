@@ -13,6 +13,8 @@
 #include "io.h";
 #include "WS2tcpip.h";
 #endif
+#include "MainMenuScene.h"
+#include "HUD.h"
 
 USING_NS_CC;
 int selectedtag = 0;
@@ -48,7 +50,8 @@ bool Selectlevel::init()
     }
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	
+	def = CCUserDefault::sharedUserDefault();
+
 	
 #pragma region Creaciondevariables
 
@@ -56,7 +59,6 @@ bool Selectlevel::init()
 	addChild(_chara);
 	Point center = Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
 	free = true;
-
 	moverderecha = false;
 	moverizq = false;
 	arriba = false;
@@ -73,12 +75,11 @@ bool Selectlevel::init()
 	camera->lookAt(Vec3(0, 0, 0), Vec3(0, 1, 0));
 	addChild(camera);
 	camera->setScale(3);
-	
+	_chara->vidas = def->getIntegerForKey("vidas");
 	_houses = Array::create();
 	_houses->retain();
 	
-
-
+	
 
 	auto keyboardListener = EventListenerKeyboard::create();
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(Selectlevel::onKeyPresed, this);
@@ -100,6 +101,24 @@ bool Selectlevel::init()
 	createhouse(800, 1);
 	createhouse(1600, 2);
 	createhouse(2400, 3);
+	auto sprite = Sprite3D::create("char/casa.c3t");
+	sprite->setScaleX(8);
+	sprite->setScaleY(8);
+	sprite->setScaleZ(4);
+	sprite->setPosition3D(Vec3(-800, 550, -400));
+	sprite->setRotation3D(Vec3(180, 90, 180));
+	addChild(sprite);
+	sprite->setName("sepizq");
+
+	PhysicsBody *finalbody = PhysicsBody::createBox(Size(10, 3000), PhysicsMaterial(10, 0, 0.9f));
+	finalbody->setPositionOffset(Vec2(500.0f, 0.0f));
+	finalbody->setContactTestBitmask(true);
+	finalbody->setDynamic(false);
+	finalbody->setRotationEnable(false);
+	finalbody->addMass(30.0);
+	finalbody->addMoment(2.0);
+	finalbody->setLinearDamping(0.8f);
+	sprite->setPhysicsBody(finalbody);
 
 	PhysicsBody *worldbody = PhysicsBody::createEdgeBox(Size(10000, 1), PhysicsMaterial(10, 0, 0.9f));
 	worldbody->setPositionOffset(Vec2(0.0f, -205.0f));
@@ -110,27 +129,23 @@ bool Selectlevel::init()
 	worldbody->addMoment(2.0);
 	worldbody->setLinearDamping(0.8f);
 	this->setPhysicsBody(worldbody);
-
-
-
-
-	auto directionalLight = DirectionLight::create(Vec3(-0.0f, -1.0f, -1.0f), Color3B(25,25, 25) );
-	addChild(directionalLight);
-	auto ambientlight = AmbientLight::create(Color3B(0, 0, 255));
-	addChild(ambientlight);
-	auto spotlight2 = PointLight::create( Vec3(20.0f, 0.0f, 0.0f), Color3B(255, 255, 255), 900.0f);
-	spotlight2->setIntensity(1.0);
-	auto _body2 = PhysicsBody::createCircle(30, PHYSICSBODY_MATERIAL_DEFAULT); // radius
 	
-	addChild(spotlight2);
+	hud = new HUD(_chara->vidas, false);
+	this->addChild(hud);
+	__String *puntuacion = __String::createWithFormat("Puntuacion: %d", def->getIntegerForKey("puntuacion1"));
+	LabelTTF *puntuacion1 = LabelTTF::create(puntuacion->getCString(), "Cryptik", 100.0f, Size::ZERO, TextHAlignment::CENTER, TextVAlignment::CENTER);
+	addChild(puntuacion1);
+	auto directionlight = DirectionLight::create(Vec3(0.0f, -1.0f, 0.0f), Color3B(200, 200, 125));
+
+	addChild(directionlight);
 	//xinput
 
 	Player1 = new CXBOXController(1);
 
 	auto console = Director::getInstance()->getConsole();
-	console->listenOnTCP(6113);
+	//console->listenOnTCP(6113);
 	
-	struct Console::Command changeforce = {
+	struct Console::Command changeforc = {
 		"changeforce",
 		"Cambia la fuerza del salto",
 		[ this](int fd, const std::string& args) {
@@ -146,7 +161,7 @@ bool Selectlevel::init()
 		} };
 	
 
-	console->addCommand(changeforce);
+	console->addCommand(changeforc);
     return true;
 	
 }
@@ -178,12 +193,12 @@ PhysicsWorld* Selectlevel::getPhysicsWorld() {
 }
 
 void Selectlevel::update(float dt) {
-	if (moverderecha && free && !changescene) {
+	if (moverderecha && !changescene) {
 		_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, -200000));
 
 	}
 	else {
-		if (moverizq && free && !changescene)
+		if (moverizq  && !changescene)
 		{
 			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, -200000));
 
@@ -192,7 +207,15 @@ void Selectlevel::update(float dt) {
 	}
 
 	//XINPUT 
-		
+	if (_chara->getPositionY() < -400.0f)
+	{
+		_chara->vidas -= 1;
+		def->setIntegerForKey("vidas", _chara->vidas);
+		def->flush();
+		if (!def->getIntegerForKey("vidas") == 0) Restart();
+	}
+	if (def->getIntegerForKey("vidas") == 0) goToMainMenu();
+
 if (Player1->IsConnected()) {
 	/*//Player1->Vibrate(65535, 10);
 		if (Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_A)
@@ -216,8 +239,9 @@ if (Player1->IsConnected()) {
 		}*/
 	}
 
-if (0 <= _chara->getPositionX() <= 1600) {
-	camera->setPosition3D(Vec3(_chara->getPositionX(), camera->getPositionY(), camera->getPositionZ()));
+if (_chara->getPositionX() > 0) {
+	camera->setPosition(Vec2(_chara->getPositionX(), camera->getPositionY()));
+	hud->setPositionX(300 + _chara->getPositionX());
 }
 if (changescene == true) {
 	
@@ -244,7 +268,6 @@ void Selectlevel::GoToPauseScene()
 void Selectlevel::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	
 	_pressedKey = keycode;
-	if (free)
 	switch (keycode)
 	{
 	case EventKeyboard::KeyCode::KEY_A:
@@ -253,44 +276,9 @@ void Selectlevel::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	case EventKeyboard::KeyCode::KEY_D:
 		moverizq = true;
 		break;
-	case EventKeyboard::KeyCode::KEY_W:
-		
-			_chara->getPhysicsBody()->setVelocityLimit(800);
-
-			if (moverderecha) {
-				_chara->getPhysicsBody()->resetForces();
-
-				_chara->jumpright();
-			}
-			else if (moverizq) {
-				_chara->getPhysicsBody()->resetForces();
-
-				_chara->jumpleft();
-			}
-			else {
-				_chara->jump();
-			}
-			free = false;
-		
-		break;
-	case EventKeyboard::KeyCode::KEY_ENTER:
+	case EventKeyboard::KeyCode::KEY_Q:
 		GoToPauseScene();
 		break;
-	}
-	else
-	{
-		switch (keycode)
-		{
-		case EventKeyboard::KeyCode::KEY_A:
-			_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, 0));
-			break;
-		case EventKeyboard::KeyCode::KEY_D:
-			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, 0));
-			break;
-		case EventKeyboard::KeyCode::KEY_ENTER:
-			GoToPauseScene();
-			break;
-		}
 	}
 	if (selecciondenivel == true && keycode == EventKeyboard::KeyCode::KEY_SPACE) {
 		casafinal = dynamic_cast<Sprite3D*>(_houses->getLastObject());
@@ -314,11 +302,6 @@ void Selectlevel::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 		moverizq = false;
 		_chara->getPhysicsBody()->resetForces();
 		break;
-	case EventKeyboard::KeyCode::KEY_S:
-		rotar = false;
-		break;
-	
-	
 	}
 
 }
@@ -357,6 +340,23 @@ void Selectlevel::GoToGameScene()
 
 		_houses->autorelease();
 		auto scene = Game::createScene();
+
 		Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
 	}
+}
+void Selectlevel::goToMainMenu() {
+	auto scene = MainMenu::createScene();
+	this->cleanup();
+
+	_houses->autorelease();
+
+	Director::getInstance()->replaceScene(TransitionPageTurn::create(1.0, scene, 0));
+}
+void Selectlevel::Restart() {
+	auto scene = Selectlevel::createScene();
+	this->cleanup();
+
+	_houses->autorelease();
+
+	Director::getInstance()->replaceScene(TransitionPageTurn::create(1.0, scene, 0));
 }

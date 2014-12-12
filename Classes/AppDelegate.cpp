@@ -25,6 +25,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	// initialize director
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
+	auto console = director->getConsole();
+	console->listenOnTCP(1234);
 	if (!glview) {
 		glview = GLViewImpl::create("My Game");
 		director->setOpenGLView(glview);
@@ -42,8 +44,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // create a scene. it's an autorelease object Sets the search path for images
 	resDirOrders.push_back("images");
 
-	glview->setFrameSize(1024, 600);
-    glview->setDesignResolutionSize(1024, 600, ResolutionPolicy::EXACT_FIT);
+	glview->setFrameSize(1024, 720);
+    glview->setDesignResolutionSize(1024, 720, ResolutionPolicy::EXACT_FIT);
 
 	fileUtils->setSearchPaths(resDirOrders);
 

@@ -8,6 +8,7 @@ USING_NS_CC;
 #include "CharacterScene.h"
 #include "PlatformScene.h"
 #include "CXBOXController.h"
+#include "HUD.h"
 
 class Game : public cocos2d::Layer
 {
@@ -23,7 +24,12 @@ class Game : public cocos2d::Layer
 	bool free;
 	CXBOXController* Player1;
 	Camera *camera;
-
+	LabelTTF *lifes;
+	bool abrir;
+	Sprite3D *esfera;
+	int puntuacion;
+	HUD *hud;
+	CCUserDefault *def;
 public:
 	
 	Character *_chara;
@@ -38,7 +44,7 @@ public:
 		mWorld->setGravity(Vect(0, -980));  // No gravity
 	}
 	PhysicsWorld* getPhysicsWorld();
-
+	bool muerto;
 
 	PhysicsWorld* mWorld;
 
@@ -58,7 +64,11 @@ public:
 	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
 	void update(float dt);
 
-	void createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffste, double yoffset);
+	void createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffste, double yoffset, std::string name);
+
+	void GotoMenuScene();
+
+	void Restart();
 
 	struct Command {
 		std::string name;

@@ -1,5 +1,6 @@
 #include "MainMenuScene.h"
 #include "Selectlevelscene.h"
+#include "GameScene.h"
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
@@ -36,7 +37,7 @@ bool MainMenu::init()
 
 	auto Start = MenuItemImage::create("mainmenu/start.png", "mainmenu/start(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
 
-	auto Load = MenuItemImage::create("mainmenu/load.png", "mainmenu/load(click).png", CC_CALLBACK_1(MainMenu::GoToGameScene,this));
+	auto Load = MenuItemImage::create("mainmenu/load.png", "mainmenu/load(click).png", CC_CALLBACK_1(MainMenu::LoadGameScene,this));
 	
 	auto Exit = MenuItemImage::create("mainmenu/exit.png", "mainmenu/exit(click).png", CC_CALLBACK_1(MainMenu::ExitGame,this));
 	
@@ -70,6 +71,11 @@ void MainMenu::menuCloseCallback(Ref* pSender)
 }
 void MainMenu::GoToGameScene(Ref* pSender) 
 {
+	CCUserDefault *def = CCUserDefault::sharedUserDefault();
+
+	def->setIntegerForKey("vidas", 3);
+	def->setIntegerForKey("puntuacion1", 0);
+	def->flush();
 	auto scene = Selectlevel::createScene();
 	CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);//parar la musica del menu al pasar al juego
    Director::getInstance()->replaceScene(TransitionFade::create(1.0,scene));
@@ -77,4 +83,11 @@ void MainMenu::GoToGameScene(Ref* pSender)
 void MainMenu::ExitGame(Ref* pSender)
 {
 	exit(0);
+}
+void MainMenu::LoadGameScene(Ref* pSender)
+{
+	
+	auto scene = Selectlevel::createScene();
+	CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);//parar la musica del menu al pasar al juego
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
 }

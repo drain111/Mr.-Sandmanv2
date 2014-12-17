@@ -49,6 +49,9 @@ bool Game::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	def = CCUserDefault::sharedUserDefault();
 
+
+
+		
 	
 #pragma region Creaciondevariables
 
@@ -373,7 +376,7 @@ bool Game::onContactBegin(cocos2d::PhysicsContact& contact) {
 		spriteB->setPosition(Vec2(spriteB->getPositionX(), spriteB->getPositionY()-100));
 		removeChild(dynamic_cast<Platform*>(_plataformas->getObjectAtIndex(5)));
 	}
-	if (spriteA->getName().compare("character") == 0 && spriteB->getName().compare("esfera") == 0) {
+	if ((spriteA->getName().compare("esfera") == 0 || spriteA->getName().compare("character") == 0) && (spriteB->getName().compare("esfera") == 0 || spriteB->getName().compare("character") == 0)) {
 		GotoMenuScene();
 	}
 	return true;

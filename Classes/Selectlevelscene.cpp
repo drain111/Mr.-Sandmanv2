@@ -1,5 +1,7 @@
 #include "SelectLevelScene.h"
 #include "GameScene.h"
+#include "Game2Scene.h"
+
 #include "CharacterScene.h" 
 #include <string>
 #include "CXBOXController.h"
@@ -135,9 +137,7 @@ bool Selectlevel::init()
 	__String *puntuacion = __String::createWithFormat("Puntuacion: %d", def->getIntegerForKey("puntuacion1"));
 	LabelTTF *puntuacion1 = LabelTTF::create(puntuacion->getCString(), "Cryptik", 100.0f, Size::ZERO, TextHAlignment::CENTER, TextVAlignment::CENTER);
 	addChild(puntuacion1);
-	auto directionlight = DirectionLight::create(Vec3(0.0f, -1.0f, 0.0f), Color3B(200, 200, 125));
-
-	addChild(directionlight);
+	
 	//xinput
 
 	Player1 = new CXBOXController(1);
@@ -335,14 +335,26 @@ bool Selectlevel::onContactBegin(cocos2d::PhysicsContact& contact) {
 }
 void Selectlevel::GoToGameScene()
 {
-	if (selectedtag == 0 ) {
-		this->cleanup();
+	this->cleanup();
+	Scene *scene;
+	_houses->autorelease();
+	switch (selectedtag)
+	{ 
+	case 0:
+		scene = Game::createScene();
 
-		_houses->autorelease();
-		auto scene = Game::createScene();
+		break;
+	case 1:
+		scene = Game2::createScene();
 
-		Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
-	}
+		break;
+	default:
+		break;
+	} 
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
+
+		
+	
 }
 void Selectlevel::goToMainMenu() {
 	auto scene = MainMenu::createScene();

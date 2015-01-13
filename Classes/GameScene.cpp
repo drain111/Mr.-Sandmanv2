@@ -69,6 +69,7 @@ bool Game::init()
 	rotar = false;
 	bool abrir = false;
 	puntuacion = 0;
+	running = false;
 	_chara->vidas = def->getIntegerForKey("vidas");
 
 #pragma endregion
@@ -252,12 +253,14 @@ void Game::createplatform(double x, double y, double z, double scale, double bod
 void Game::update(float dt) {
 	if (moverderecha && free) {
 		//_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
+		
 		_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, -200000));
 
 	}
 	else {
 		if (moverizq && free)
 		{
+			
 			//_chara->setPositionX(_chara->getPositionX() + _chara->getmovement());
 			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, -200000));
 
@@ -325,13 +328,14 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 		break;
 	case EventKeyboard::KeyCode::KEY_A:
 		moverizq = true;
+
 		_chara->runanimation();
 
 		break;
 	case EventKeyboard::KeyCode::KEY_W:
 		
 			_chara->getPhysicsBody()->setVelocityLimit(700);
-			_chara->jumpanimation();
+			
 			if (moverderecha) {
 				_chara->getPhysicsBody()->resetForces();
 
@@ -378,11 +382,16 @@ void Game::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 	{
 	case EventKeyboard::KeyCode::KEY_D:
 		moverderecha = false;
+		_chara->sprite->stopAllActions();
 		_chara->getPhysicsBody()->resetForces();
 
 		break;
 	case EventKeyboard::KeyCode::KEY_A:
 		moverizq = false;
+		_chara->sprite->stopAllActions();
+
+		_chara->stopAllActions();
+
 		_chara->getPhysicsBody()->resetForces();
 		break;
 	case EventKeyboard::KeyCode::KEY_S:

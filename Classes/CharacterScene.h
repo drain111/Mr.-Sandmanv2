@@ -10,11 +10,11 @@ class Character : public cocos2d::Sprite
 {
 
 	PhysicsBody *_body;
-	Sprite3D *sprite;
 
 public:
 
 	SpotLight *spotlight;
+	Sprite3D *sprite;
 
 	int force;
 	int  vidas;

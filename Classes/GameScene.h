@@ -30,6 +30,7 @@ class Game : public cocos2d::Layer
 	int puntuacion;
 	HUD *hud;
 	CCUserDefault *def;
+	bool running;
 public:
 	
 	Character *_chara;

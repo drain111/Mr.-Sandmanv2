@@ -46,19 +46,19 @@ void Character::jumpanimation() {
 	auto animation = Animation3D::create("char/saltito.c3t");
 
 	// creates the Action with Animation object
-	auto animate = Animate3D::create(animation, 0, 2);
+	auto animate = Animate3D::create(animation);
 
 	// runs the animation
-	sprite->runAction(animate);
+	sprite->runAction(RepeatForever::create(animate));
 }
 void Character::runanimation() {
 	auto animation = Animation3D::create("char/andar.c3t");
 
 	// creates the Action with Animation object
-	auto animate = Animate3D::create(animation, 0, 2);
+	auto animate = Animate3D::create(animation);
 
 	// runs the animation
-	sprite->runAction(animate);
+	sprite->runAction(RepeatForever::create(animate));
 
 }
 

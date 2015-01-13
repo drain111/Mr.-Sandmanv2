@@ -14,7 +14,8 @@ bool Character::init()
 	}
 	vidas = 3;
 
-	auto sprite = Sprite3D::create("char/char.c3t");
+	sprite = Sprite3D::create("char/char.c3t");
+	sprite->setRotation3D(Vec3(0, 90, 0));
 	sprite->setPosition3D(Vec3(0, 25, 0));
 	force = 900000;
 	/*auto animation3d = Animation3D::create("char/char.c3t");
@@ -40,6 +41,25 @@ bool Character::init()
 
 
 	return true;
+}
+void Character::jumpanimation() {
+	auto animation = Animation3D::create("char/saltito.c3t");
+
+	// creates the Action with Animation object
+	auto animate = Animate3D::create(animation, 0, 2);
+
+	// runs the animation
+	sprite->runAction(animate);
+}
+void Character::runanimation() {
+	auto animation = Animation3D::create("char/andar.c3t");
+
+	// creates the Action with Animation object
+	auto animate = Animate3D::create(animation, 0, 2);
+
+	// runs the animation
+	sprite->runAction(animate);
+
 }
 
 

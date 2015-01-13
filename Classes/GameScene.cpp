@@ -22,7 +22,7 @@ Scene* Game::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     // 'layer' is an autorelease object
     auto layer = Game::create();
 	layer->setPhysicsWorld(scene->getPhysicsWorld());
@@ -96,6 +96,9 @@ bool Game::init()
 	createplatform(-3980.0, -300.0, 300.0, 90.0, 1000, 1000, 800, 130, "pared");
 
 	createplatform(-3400.0, -300.0, 0.0, 8.0, 160, 1, 32, 65, "plataforma");
+
+	dynamic_cast<Platform*>(_plataformas->getObjectAtIndex(3))->setVisible(FALSE);
+
 	esfera = Sprite3D::create("char/esfera.c3t");
 	esfera->setPosition3D(Vec3(-3300.0, 200.0, 0));
 	auto _bodyesf = PhysicsBody::createCircle(128, PHYSICSBODY_MATERIAL_DEFAULT, Vec2(-80, -80));
@@ -165,7 +168,33 @@ bool Game::init()
 	hud = new HUD(_chara->vidas, true);
 	this->addChild(hud);
 	
-	
+	__String *text = __String::createWithFormat("Salta con el boton w y muevete con a y d");
+	LabelTTF *consejo1 = LabelTTF::create(text->getCString(), "Cryptik", 24.0f, Size::ZERO, TextHAlignment::RIGHT, TextVAlignment::TOP);
+	addChild(consejo1);
+
+	text = __String::createWithFormat("En este nivel los botones estan invertidos");
+	LabelTTF *consejo2 = LabelTTF::create(text->getCString(), "Cryptik", 24.0f, Size::ZERO, TextHAlignment::RIGHT, TextVAlignment::TOP);
+	consejo2->setPositionY(200);
+	consejo2->setPositionX(300);
+	addChild(consejo2);
+
+	text = __String::createWithFormat("Tirate, manten pulsado el boton de direccion \n y cuando estes cerca de la plataforma, salta en el aire");
+	LabelTTF *consejo3 = LabelTTF::create(text->getCString(), "Cryptik", 24.0f, Size::ZERO, TextHAlignment::RIGHT, TextVAlignment::TOP);
+	consejo3->setPositionY(200);
+	consejo3->setPositionX(-200);
+	addChild(consejo3);
+
+	text = __String::createWithFormat("Salta aqui ");
+	LabelTTF *consejo4 = LabelTTF::create(text->getCString(), "Cryptik", 24.0f, Size::ZERO, TextHAlignment::RIGHT, TextVAlignment::TOP);
+	consejo4->setPositionY(200);
+	consejo4->setPositionX(-2200);
+	addChild(consejo4);
+
+	text = __String::createWithFormat("Empuja el cubo  ");
+	LabelTTF *consejo5 = LabelTTF::create(text->getCString(), "Cryptik", 24.0f, Size::ZERO, TextHAlignment::RIGHT, TextVAlignment::TOP);
+	consejo5->setPositionY(200);
+	consejo5->setPositionX(-2400);
+	addChild(consejo5);
 
 	
 	//xinput
@@ -292,14 +321,17 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	{
 	case EventKeyboard::KeyCode::KEY_D:
 		moverderecha = true;
+		_chara->runanimation();
 		break;
 	case EventKeyboard::KeyCode::KEY_A:
 		moverizq = true;
+		_chara->runanimation();
+
 		break;
 	case EventKeyboard::KeyCode::KEY_W:
 		
 			_chara->getPhysicsBody()->setVelocityLimit(700);
-
+			_chara->jumpanimation();
 			if (moverderecha) {
 				_chara->getPhysicsBody()->resetForces();
 

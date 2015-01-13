@@ -10,6 +10,7 @@ class Character : public cocos2d::Sprite
 {
 
 	PhysicsBody *_body;
+	Sprite3D *sprite;
 
 public:
 
@@ -37,7 +38,9 @@ public:
 	bool IsXBOXControlConnected();
 
 	PhysicsBody getbody();
+	void jumpanimation();
 
+	void runanimation();
 
 	void jumpright();
 

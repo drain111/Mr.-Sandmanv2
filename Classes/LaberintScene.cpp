@@ -79,6 +79,8 @@ bool LABERINT::init()
 	camera->setPosition3D(Vec3(0, 0, 500));
 	_plataformas = Array::create();
 	_plataformas->retain();
+	_puertas = Array::create();
+	_puertas->retain();
 	_chara->setPosition3D(Vec3(90.0, 90.0, 0.0));
 	_chara->setScale(1.0);
 	camera->lookAt(Vec3(0, 0, 0), Vec3(0, 1, 0));
@@ -182,9 +184,9 @@ void LABERINT::createdoor(int x, int tag) {
 	door->setName("puerta");
 	door->setTag(tag);
 	addChild(door);
+	_puertas->addObject(door);
 
-	PhysicsBody *doorbody = PhysicsBody::createEdgeBox(Size(70, 5));
-	doorbody->setPositionOffset(Vec2(0,0));
+	PhysicsBody *doorbody = PhysicsBody::createEdgeBox(Size(70, 35));
 	doorbody->setContactTestBitmask(true);
 	doorbody->setDynamic(false);
 	doorbody->setRotationEnable(false);
@@ -349,10 +351,10 @@ void LABERINT::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 		}
 	}
 	if (selecciondenivel == true && keycode == EventKeyboard::KeyCode::KEY_SPACE) {
-		puertafinal = dynamic_cast<Sprite3D*>(_puertas->getLastObject());
+		puertafinal = dynamic_cast<Door*>(_puertas->getLastObject());
 		auto animation3d = Animation3D::create("char/puerta.c3t");
 		auto animate3d = Animate3D::create(animation3d, 0, 2);
-		puertafinal->runAction(animate3d);
+		puertafinal->sprite->runAction(animate3d);
 		changescene = true;
 	}
 

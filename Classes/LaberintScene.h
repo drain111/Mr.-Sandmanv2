@@ -5,6 +5,7 @@ USING_NS_CC;
 
 
 #include "cocos2d.h"
+#include "DoorScene.h"
 #include "CharacterScene.h"
 #include "PlatformScene.h"
 #include "CXBOXController.h"
@@ -27,7 +28,7 @@ private:
 	bool selecciondenivel;
 	int selectedtag;
 	bool changescene;
-	Sprite3D *puertafinal;
+	Door *puertafinal;
 	CXBOXController* Player1;
 	Camera *camera;
 	LabelTTF *lifes;

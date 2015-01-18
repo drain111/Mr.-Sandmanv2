@@ -10,12 +10,12 @@ class Door : public cocos2d::Sprite
 
 	PhysicsBody *_body;
 	PhysicsWorld* mWorld;
-	Sprite3D *sprite;
 	Node *puerta;
 
 public:
 
 
+	Sprite3D *sprite;
 
 
 

@@ -67,7 +67,12 @@ bool Selectlevel::init()
 	selectedtag = 0;
 	changescene = false;
 #pragma endregion
-
+	auto sky = Sprite3D::create("char/citysky.c3b");
+	sky->setPositionZ(-2000);
+	sky->setPositionX(800);
+	sky->setScaleX(150);
+	sky->setScaleY(90);
+	addChild(sky);
 	camera = Camera::createPerspective(60,visibleSize.width / visibleSize.height,1, 1000);
 	camera->setPosition3D(Vec3(0, 0, 500));
 	_chara->setPosition3D(Vec3(0, 90.0, 0.0));

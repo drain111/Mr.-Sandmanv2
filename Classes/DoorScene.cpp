@@ -15,10 +15,7 @@ bool Door::init()
 		return false;
 	}
 
-	sprite = Sprite3D::create("char/a.obj");
-	sprite->setTexture("char/plat.png");
-
-
+	sprite = Sprite3D::create("char/puerta.c3t");
 	addChild(sprite);
 
 	return true;

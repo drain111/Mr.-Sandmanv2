@@ -1,7 +1,7 @@
 #include "SelectLevelScene.h"
 #include "GameScene.h"
 #include "Game2Scene.h"
-
+#include "LaberintScene.h"
 #include "CharacterScene.h" 
 #include <string>
 #include "CXBOXController.h"
@@ -19,8 +19,6 @@
 #include "HUD.h"
 
 USING_NS_CC;
-int selectedtag = 0;
-bool changescene = false;
 Sprite3D *casafinal;
 
 Scene* Selectlevel::createScene()
@@ -132,7 +130,7 @@ bool Selectlevel::init()
 	worldbody->setLinearDamping(0.8f);
 	this->setPhysicsBody(worldbody);
 	
-	hud = new HUD(_chara->vidas, false);
+	hud = new HUD(_chara->vidas, false,0);
 	this->addChild(hud);
 	__String *puntuacion = __String::createWithFormat("Puntuacion: %d", def->getIntegerForKey("puntuacion1"));
 	LabelTTF *puntuacion1 = LabelTTF::create(puntuacion->getCString(), "Cryptik", 100.0f, Size::ZERO, TextHAlignment::CENTER, TextVAlignment::CENTER);
@@ -345,8 +343,7 @@ void Selectlevel::GoToGameScene()
 
 		break;
 	case 1:
-		scene = Game2::createScene();
-
+		scene = LABERINT::createScene();
 		break;
 	default:
 		break;

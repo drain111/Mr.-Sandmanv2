@@ -1,5 +1,7 @@
-#ifndef __SELECTLEVEL_SCENE_H__
-#define __SELECTLEVEL_SCENE_H__
+#ifndef __LABERINT2_SCENE_H__
+#define __LABERINT2_SCENE_H__
+
+USING_NS_CC;
 
 #include "cocos2d.h"
 #include "CharacterScene.h"
@@ -7,26 +9,32 @@
 #include "CXBOXController.h"
 #include "HUD.h"
 
-USING_NS_CC;
-
-class Selectlevel : public cocos2d::Layer
+class LABERINT2 : public cocos2d::Layer
 {
+private:
 	EventKeyboard::KeyCode _pressedKey;
 	bool moverderecha;
 	bool moverizq;
 	bool arriba;
 	bool rotar;
+	cocos2d::Array *_plataformas;
+	Array *_puertas;
+	int i;
+	int j;
+	int k;
 	bool free;
-	Array *_houses;
-	CXBOXController* Player1;
-	Camera *camera;
 	bool selecciondenivel;
 	int selectedtag;
 	bool changescene;
-	Sprite3D *casafinal;
-	CCUserDefault *def;
+	Sprite3D *puertafinal;
+	CXBOXController* Player1;
+	Camera *camera;
+	LabelTTF *lifes;
+	bool abrir;
+	Sprite3D *esfera;
+	int puntuacion;
 	HUD *hud;
-
+	CCUserDefault *def;
 public:
 	
 	Character *_chara;
@@ -41,13 +49,12 @@ public:
 		mWorld->setGravity(Vect(0, -980));  // No gravity
 	}
 	PhysicsWorld* getPhysicsWorld();
-
+	bool muerto;
 
 	PhysicsWorld* mWorld;
 
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
     static cocos2d::Scene* createScene();
-
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();  
     
@@ -55,17 +62,16 @@ public:
     void menuCloseCallback(cocos2d::Ref* pSender);
     
 	void GoToPauseScene();
-
+	void createdoor(int x, int tag);
 	void onKeyPresed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
-	
-	void createhouse(int x, int tag);
 
 	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
 	void update(float dt);
 
-	void GoToGameScene();
+	void createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffste, double yoffset, std::string name);
 
-	void goToMainMenu();
+	void GotoNext();
+	void GotoMenuScene();
 	void Restart();
 
 	struct Command {
@@ -75,7 +81,7 @@ public:
 	};
 
     // implement the "static create()" method manually
-    CREATE_FUNC(Selectlevel);
+    CREATE_FUNC(LABERINT2);
 
 };
 

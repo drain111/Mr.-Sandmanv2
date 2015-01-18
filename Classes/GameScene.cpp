@@ -166,7 +166,7 @@ bool Game::init()
 	contactListener->onContactBegin = CC_CALLBACK_1(Game::onContactBegin, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-	hud = new HUD(_chara->vidas, true);
+	hud = new HUD(_chara->vidas, true,300);
 	this->addChild(hud);
 	
 	__String *text = __String::createWithFormat("Salta con el boton w y muevete con a y d");

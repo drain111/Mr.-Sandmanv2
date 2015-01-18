@@ -3,8 +3,9 @@
 
 USING_NS_CC;
 
-HUD::HUD(int vidasJ, bool tiempobool)
+HUD::HUD(int vidasJ, bool tiempobool, int tiempolvl)
 {
+	tiempo=tiempolvl;
 	vidas=vidasJ;
 	__String *text= __String::createWithFormat("lifes: %d",vidas);
 	LabelTTF *puntos = LabelTTF::create(text->getCString(),"Cryptik",24.0f,Size::ZERO,TextHAlignment::RIGHT,TextVAlignment::TOP);
@@ -15,8 +16,9 @@ HUD::HUD(int vidasJ, bool tiempobool)
 	}
 
 }
+
+
 void HUD::activartiempo() {
-	tiempo = 300;
 	frames = 0;
 	__String *time = __String::createWithFormat("time: %d ", tiempo);
 	timeTTF = LabelTTF::create(time->getCString(), "Cryptik", 24.0f, Size::ZERO, TextHAlignment::CENTER, TextVAlignment::TOP);

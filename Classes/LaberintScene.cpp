@@ -1,6 +1,7 @@
 #include "MainMenuScene.h"
-#include "Game2Scene.h"
-#include "CharacterScene.h" 
+#include "LaberintScene.h"
+#include "Laberint2Scene.h"
+#include "CharacterScene.h"
 #include <string>
 #include "CXBOXController.h"
 #include "PauseScene.h"
@@ -17,15 +18,14 @@
 #include "SelectlevelScene.h"
 
 USING_NS_CC;
-//float rot = 0.2f;
-//int direc = 0;
-Scene* Game2::createScene()
+
+Scene* LABERINT::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     // 'layer' is an autorelease object
-    auto layer = Game2::create();
+	auto layer = LABERINT::create();
 	layer->setPhysicsWorld(scene->getPhysicsWorld());
 	
 
@@ -38,7 +38,7 @@ Scene* Game2::createScene()
 }
 
 // on "init" you need to initialize your instance
-bool Game2::init()
+bool LABERINT::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -63,7 +63,8 @@ bool Game2::init()
 	j = 1;
 	k = 1;
 	free = true;
-
+	float rot = 0.2f;
+	int direc = 0;
 	moverderecha = false;
 	moverizq = false;
 	arriba = false;
@@ -84,30 +85,64 @@ bool Game2::init()
 	addChild(camera);
 	camera->setScale(3);
 
-	createplatform(100.0, -230.0, 0.0, 8.0, 160, 1, 32, 65, "plataforma");
+	createplatform(0.0, -300.0, 0.0, 40.0, 800, 1, 160, 65, "plataforma");
+	createdoor(-50,1);
+	createdoor(200,2);
+	createdoor(450,3);
+	auto sprite = Sprite3D::create("char/a.obj");
+	sprite->setScaleX(8);
+	sprite->setScaleY(8);
+	sprite->setScaleZ(4);
+	sprite->setPosition3D(Vec3(-725, 550, -400));
+	sprite->setRotation3D(Vec3(180, 90, 180));
+	addChild(sprite);
+	sprite->setName("sepizq");
 
-	auto door1 = Door::create();
-	addChild(door1); 
-	
+	PhysicsBody *finalbody = PhysicsBody::createBox(Size(10, 3000), PhysicsMaterial(10, 0, 0.9f));
+	finalbody->setPositionOffset(Vec2(500.0f, 0.0f));
+	finalbody->setContactTestBitmask(true);
+	finalbody->setDynamic(false);
+	finalbody->setRotationEnable(false);
+	finalbody->addMass(30.0);
+	finalbody->addMoment(2.0);
+	finalbody->setLinearDamping(0.8f);
+	sprite->setPhysicsBody(finalbody);
+
+	auto sprite2 = Sprite3D::create("char/a.obj");
+	sprite2->setScaleX(8);
+	sprite2->setScaleY(8);
+	sprite2->setScaleZ(4);
+	sprite2->setPosition3D(Vec3(100, -300, -400));
+	sprite2->setRotation3D(Vec3(180, 90, 180));
+	addChild(sprite2);
+	sprite2->setName("sepder");
+
+	PhysicsBody *finalbody2 = PhysicsBody::createBox(Size(10, 3000), PhysicsMaterial(10, 0, 0.9f));
+	finalbody2->setPositionOffset(Vec2(500.0f, 0.0f));
+	finalbody2->setContactTestBitmask(true);
+	finalbody2->setDynamic(false);
+	finalbody2->setRotationEnable(false);
+	finalbody2->addMass(30.0);
+	finalbody2->addMoment(2.0);
+	finalbody2->setLinearDamping(0.8f);
+	sprite2->setPhysicsBody(finalbody2);
+
+
 
 	auto keyboardListener = EventListenerKeyboard::create();
-	keyboardListener->onKeyPressed = CC_CALLBACK_2(Game2::onKeyPresed, this);
-	keyboardListener->onKeyReleased = CC_CALLBACK_2(Game2::onKeyReleased, this);
+	keyboardListener->onKeyPressed = CC_CALLBACK_2(LABERINT::onKeyPresed, this);
+	keyboardListener->onKeyReleased = CC_CALLBACK_2(LABERINT::onKeyReleased, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 	this->scheduleUpdate();
-
-
 
 	//Physics
 
 	auto contactListener = EventListenerPhysicsContact::create();
-	contactListener->onContactBegin = CC_CALLBACK_1(Game2::onContactBegin, this);
+	contactListener->onContactBegin = CC_CALLBACK_1(LABERINT::onContactBegin, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-	hud = new HUD(_chara->vidas, true,300);
+	hud = new HUD(_chara->vidas, true,900);
 	this->addChild(hud);
-	
-	
 
 	
 	//xinput
@@ -136,14 +171,39 @@ bool Game2::init()
     return true;
 	
 }
-PhysicsWorld* Game2::getPhysicsWorld() {
+void LABERINT::createdoor(int x, int tag) {
+	
+	Door *door = Door::create();
+	door->setPosition3D(Vec3(x, -240, 0));
+	door->setRotation3D(Vec3(180, 90, 180));
+	door->setScaleX(8);
+	door->setScaleY(8);
+	door->setScaleZ(4);
+	door->setName("puerta");
+	door->setTag(tag);
+	addChild(door);
+
+	PhysicsBody *doorbody = PhysicsBody::createEdgeBox(Size(70, 5));
+	doorbody->setPositionOffset(Vec2(0,0));
+	doorbody->setContactTestBitmask(true);
+	doorbody->setDynamic(false);
+	doorbody->setRotationEnable(false);
+	doorbody->addMass(30.0);
+	doorbody->addMoment(2.0);
+	doorbody->setLinearDamping(0.8f);
+	door->setPhysicsBody(doorbody);
+
+}
+PhysicsWorld* LABERINT::getPhysicsWorld() {
 	return mWorld;
 }
-void Game2::createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffset, double yoffset, std::string name){
+void LABERINT::createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffset, double yoffset, std::string name){
 	
 	//create platform
 	Platform *_plataforma = Platform::create();
-	_plataforma->setScale(scale);
+	_plataforma->setScaleX(scale);
+	_plataforma->setScaleY(10);
+	//_plataforma->getTexture.setScaleY(10);
 	_plataforma->setName(name);
 	_plataforma->setPosition3D(Vec3(x, y, z));
 	_plataformas->addObject(_plataforma);
@@ -162,17 +222,17 @@ void Game2::createplatform(double x, double y, double z, double scale, double bo
 	addChild(_plataforma);
 
 }
-void Game2::update(float dt) {
-	if (moverizq && free) {
+void LABERINT::update(float dt) {
+	if (moverderecha && free) {
 		//_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
-		_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, -200000));
+		_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, -200000));
 
 	}
 	else {
-		if (moverderecha && free)
+		if (moverizq && free)
 		{
 			//_chara->setPositionX(_chara->getPositionX() + _chara->getmovement());
-			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, -200000));
+			_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, -200000));
 
 		}
 		
@@ -206,9 +266,14 @@ hud->update();
 camera->setPosition3D(Vec3(_chara->getPositionX(), camera->getPositionY(), camera->getPositionZ()));
 hud->setPositionX(300 + _chara->getPositionX());
 
+if (changescene == true) {
 	
+	if (puertafinal->getNumberOfRunningActions() == 0) GotoNext();
 }
-void Game2::menuCloseCallback(Ref* pSender)
+}
+	
+
+void LABERINT::menuCloseCallback(Ref* pSender)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
@@ -220,12 +285,12 @@ void Game2::menuCloseCallback(Ref* pSender)
     exit(0);
 #endif
 }
-void Game2::GoToPauseScene() 
+void  LABERINT::GoToPauseScene() 
 {
 	auto scene = PauseScene::createScene();
 	Director::getInstance()->pushScene(scene);
 }
-void Game2::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
+void LABERINT::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	auto *aux = dynamic_cast<Platform*>(_plataformas->getLastObject());
 
 	_pressedKey = keycode;
@@ -234,14 +299,17 @@ void Game2::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	{
 	case EventKeyboard::KeyCode::KEY_D:
 		moverderecha = true;
+		_chara->runanimation();
 		break;
 	case EventKeyboard::KeyCode::KEY_A:
 		moverizq = true;
+		_chara->runanimation();
+
 		break;
 	case EventKeyboard::KeyCode::KEY_W:
 		
 			_chara->getPhysicsBody()->setVelocityLimit(700);
-
+			_chara->jumpanimation();
 			if (moverizq) {
 				_chara->getPhysicsBody()->resetForces();
 
@@ -269,19 +337,28 @@ void Game2::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	{
 		switch (keycode)
 		{
-		case EventKeyboard::KeyCode::KEY_A:
-			_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, 0));
-			break;
 		case EventKeyboard::KeyCode::KEY_D:
 			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, 0));
+			break;
+		case EventKeyboard::KeyCode::KEY_A:
+			_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, 0));
 			break;
 		case EventKeyboard::KeyCode::KEY_Q:
 			GoToPauseScene();
 			break;
 		}
 	}
+	if (selecciondenivel == true && keycode == EventKeyboard::KeyCode::KEY_SPACE) {
+		puertafinal = dynamic_cast<Sprite3D*>(_puertas->getLastObject());
+		auto animation3d = Animation3D::create("char/puerta.c3t");
+		auto animate3d = Animate3D::create(animation3d, 0, 2);
+		puertafinal->runAction(animate3d);
+		changescene = true;
+	}
+
+
 }
-void Game2::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
+void LABERINT::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 
 	_pressedKey = keycode;
 	switch (keycode)
@@ -303,7 +380,7 @@ void Game2::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 	}
 
 }
-bool Game2::onContactBegin(cocos2d::PhysicsContact& contact) {
+bool LABERINT::onContactBegin(cocos2d::PhysicsContact& contact) {
 	// Do something
 
 
@@ -314,13 +391,52 @@ bool Game2::onContactBegin(cocos2d::PhysicsContact& contact) {
 	auto spriteA = (Sprite*)contact.getShapeA()->getBody()->getNode();
 	auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
 
-	
-	if ((spriteA->getName().compare("esfera") == 0 || spriteA->getName().compare("character") == 0) && (spriteB->getName().compare("esfera") == 0 || spriteB->getName().compare("character") == 0)) {
-		GotoMenuScene();
+
+	if (spriteA->getName().compare("character")  == 0 &&  spriteB->getName().compare("puerta") == 0) {
+		selecciondenivel = true;
+		selectedtag = spriteB->getTag();
+		_puertas->addObject(spriteB);
+
 	}
+	else {
+		if (_puertas->capacity() != 0) {
+
+			_puertas->removeAllObjects();
+			selecciondenivel = false;
+		}
+	}
+
+
 	return true;
 }
-void Game2::GotoMenuScene()
+void LABERINT::GotoNext()
+{
+	puntuacion = _chara->vidas * hud->tiempo;
+	def->setIntegerForKey("puntuacion1", puntuacion);
+	this->cleanup();
+	Scene *scene;
+	_puertas->autorelease();
+	def->setIntegerForKey("tiempo1", hud->tiempo);
+	def->setIntegerForKey("vidas", _chara->vidas);
+	switch (selectedtag)
+	{ 
+	case 1:
+		scene = LABERINT::createScene();
+		break;
+	case 2:
+		//scene = LABERINT2::createScene();
+		break;
+
+	case 3:
+		scene = LABERINT::createScene();
+	default:
+		break;
+	} 
+	Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
+
+}
+
+void LABERINT::GotoMenuScene()
 {
 	if (_chara->vidas != 0) {
 	puntuacion = _chara->vidas * hud->tiempo;
@@ -333,13 +449,13 @@ void Game2::GotoMenuScene()
 	def->setIntegerForKey("vidas", _chara->vidas);
 
 	def->flush();
-
+	_puertas->autorelease();
 	auto scene = Selectlevel::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
 }
-void Game2::Restart() {
-	auto scene = Game2::createScene();
-
+void LABERINT::Restart() {
+	auto scene = LABERINT::createScene();
+	_puertas->autorelease();
 	Director::getInstance()->replaceScene(TransitionCrossFade::create(1.0, scene));
 
 }

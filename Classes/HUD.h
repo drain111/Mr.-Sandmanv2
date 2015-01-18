@@ -10,7 +10,7 @@ public:
 	int tiempo;
 	int frames;
 	LabelTTF *timeTTF;
-	HUD(int vidas, bool tiempobool);
+	HUD(int vidas, bool tiempobool,int tiempolvl);
 	void activartiempo();
 	void update();
 	~HUD(void);

@@ -413,8 +413,6 @@ bool LABERINT::onContactBegin(cocos2d::PhysicsContact& contact) {
 }
 void LABERINT::GotoNext()
 {
-	puntuacion = _chara->vidas * hud->tiempo;
-	def->setIntegerForKey("puntuacion1", puntuacion);
 	this->cleanup();
 	Scene *scene;
 	_puertas->autorelease();
@@ -442,7 +440,7 @@ void LABERINT::GotoMenuScene()
 {
 	if (_chara->vidas != 0) {
 	puntuacion = _chara->vidas * hud->tiempo;
-	def->setIntegerForKey("puntuacion1", puntuacion);
+	def->setIntegerForKey("puntuacion2", puntuacion);
 	}
 	else {
 		_chara->vidas = 3;

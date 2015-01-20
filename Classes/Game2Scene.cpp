@@ -84,7 +84,7 @@ bool Game2::init()
 	addChild(camera);
 	camera->setScale(3);
 
-	createplatform(100.0, -230.0, 0.0, 8.0, 160, 1, 32, 65, "plataforma");
+	createplatform(100.0, -300.0, 0.0, 8000.0, 160000, 1, 32, 65, "plataforma");
 
 	auto door1 = Door::create();
 	addChild(door1); 
@@ -104,7 +104,7 @@ bool Game2::init()
 	contactListener->onContactBegin = CC_CALLBACK_1(Game2::onContactBegin, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-	hud = new HUD(_chara->vidas, true,300);
+	hud = new HUD(_chara->vidas, true,800);
 	this->addChild(hud);
 	
 	
@@ -143,7 +143,8 @@ void Game2::createplatform(double x, double y, double z, double scale, double bo
 	
 	//create platform
 	Platform *_plataforma = Platform::create();
-	_plataforma->setScale(scale);
+	_plataforma->setScaleX(scale);
+	_plataforma->setScaleY(10);
 	_plataforma->setName(name);
 	_plataforma->setPosition3D(Vec3(x, y, z));
 	_plataformas->addObject(_plataforma);
@@ -227,21 +228,24 @@ void Game2::GoToPauseScene()
 }
 void Game2::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	auto *aux = dynamic_cast<Platform*>(_plataformas->getLastObject());
-
+	
 	_pressedKey = keycode;
 	if (free)
 	switch (keycode)
 	{
 	case EventKeyboard::KeyCode::KEY_D:
 		moverderecha = true;
+		_chara->runanimation();
 		break;
 	case EventKeyboard::KeyCode::KEY_A:
 		moverizq = true;
+		_chara->runanimation();
+
 		break;
 	case EventKeyboard::KeyCode::KEY_W:
 		
 			_chara->getPhysicsBody()->setVelocityLimit(700);
-
+			_chara->jumpanimation();
 			if (moverizq) {
 				_chara->getPhysicsBody()->resetForces();
 
@@ -269,16 +273,18 @@ void Game2::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	{
 		switch (keycode)
 		{
-		case EventKeyboard::KeyCode::KEY_A:
-			_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, 0));
-			break;
 		case EventKeyboard::KeyCode::KEY_D:
 			_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, 0));
+			break;
+		case EventKeyboard::KeyCode::KEY_A:
+			_chara->getPhysicsBody()->applyForce(Vec2(-_chara->force, 0));
 			break;
 		case EventKeyboard::KeyCode::KEY_Q:
 			GoToPauseScene();
 			break;
 		}
+		
+		
 	}
 }
 void Game2::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){

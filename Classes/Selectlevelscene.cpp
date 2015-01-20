@@ -125,6 +125,25 @@ bool Selectlevel::init()
 	finalbody->setLinearDamping(0.8f);
 	sprite->setPhysicsBody(finalbody);
 
+	auto sprite2 = Sprite3D::create("char/casa.c3t");
+	sprite2->setScaleX(8);
+	sprite2->setScaleY(8);
+	sprite2->setScaleZ(4);
+	sprite2->setPosition3D(Vec3(3200, 550, -400));
+	sprite2->setRotation3D(Vec3(180, 90, 180));
+	addChild(sprite2);
+	sprite2->setName("sepder");
+
+	PhysicsBody *finalbody2 = PhysicsBody::createBox(Size(10, 3000), PhysicsMaterial(10, 0, 0.9f));
+	finalbody2->setPositionOffset(Vec2(-500.0f, 0.0f));
+	finalbody2->setContactTestBitmask(true);
+	finalbody2->setDynamic(false);
+	finalbody2->setRotationEnable(false);
+	finalbody2->addMass(30.0);
+	finalbody2->addMoment(2.0);
+	finalbody2->setLinearDamping(0.8f);
+	sprite2->setPhysicsBody(finalbody2);
+
 	PhysicsBody *worldbody = PhysicsBody::createEdgeBox(Size(10000, 1), PhysicsMaterial(10, 0, 0.9f));
 	worldbody->setPositionOffset(Vec2(0.0f, -205.0f));
 	worldbody->setContactTestBitmask(true);
@@ -140,6 +159,10 @@ bool Selectlevel::init()
 	__String *puntuacion = __String::createWithFormat("Puntuacion: %d", def->getIntegerForKey("puntuacion1"));
 	LabelTTF *puntuacion1 = LabelTTF::create(puntuacion->getCString(), "Cryptik", 100.0f, Size::ZERO, TextHAlignment::CENTER, TextVAlignment::CENTER);
 	addChild(puntuacion1);
+	__String *puntuacion2 = __String::createWithFormat("Puntuacion: %d", def->getIntegerForKey("puntuacion1"));
+	LabelTTF *puntuacion3 = LabelTTF::create(puntuacion->getCString(), "Cryptik", 100.0f, Size::ZERO, TextHAlignment::CENTER, TextVAlignment::CENTER);
+	puntuacion3->setPositionX(700);
+	addChild(puntuacion3);
 	
 	//xinput
 
@@ -349,6 +372,10 @@ void Selectlevel::GoToGameScene()
 		break;
 	case 1:
 		scene = LABERINT::createScene();
+		break;
+
+	case 2:
+		scene= Game2::createScene();
 		break;
 	default:
 		break;

@@ -278,7 +278,7 @@ hud->setPositionX(300 + _chara->getPositionX());
 
 if (changescene == true) {
 	
-	if (puertafinal->getNumberOfRunningActions() == 0) GotoNext();
+	if (puertafinal->sprite->getNumberOfRunningActions() == 0) GotoNext();
 }
 }
 	
@@ -421,6 +421,7 @@ bool LABERINT3::onContactBegin(cocos2d::PhysicsContact& contact) {
 }
 void LABERINT3::GotoNext()
 {
+	
 	this->cleanup();
 	Scene *scene;
 	_puertas->autorelease();
@@ -453,7 +454,7 @@ void LABERINT3::GotoMenuScene()
 {
 	if (_chara->vidas != 0) {
 	puntuacion = _chara->vidas * hud->tiempo;
-	def->setIntegerForKey("puntuacion2", puntuacion);
+	//def->setIntegerForKey("puntuacion2", puntuacion);
 	}
 	else {
 		_chara->vidas = 3;
@@ -461,8 +462,7 @@ void LABERINT3::GotoMenuScene()
 	}
 	def->setIntegerForKey("vidas", _chara->vidas);
 
-	def->flush();
-	_puertas->autorelease();
+	//def->flush();
 	auto scene = Selectlevel::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
 }

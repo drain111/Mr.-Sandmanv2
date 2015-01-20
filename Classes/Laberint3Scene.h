@@ -1,5 +1,5 @@
-#ifndef __LABERINT2_SCENE_H__
-#define __LABERINT2_SCENE_H__
+#ifndef __LABERINT3_SCENE_H__
+#define __LABERINT3_SCENE_H__
 
 USING_NS_CC;
 
@@ -9,7 +9,7 @@ USING_NS_CC;
 #include "CXBOXController.h"
 #include "HUD.h"
 
-class LABERINT2 : public cocos2d::Layer
+class LABERINT3 : public cocos2d::Layer
 {
 private:
 	EventKeyboard::KeyCode _pressedKey;
@@ -81,7 +81,7 @@ public:
 	};
 
     // implement the "static create()" method manually
-    CREATE_FUNC(LABERINT2);
+    CREATE_FUNC(LABERINT3);
 
 };
 

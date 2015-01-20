@@ -20,13 +20,13 @@
 
 USING_NS_CC;
 
-Scene* LABERINT2::createScene()
+Scene* LABERINT3::createScene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
     // 'layer' is an autorelease object
-	auto layer = LABERINT2::create();
+	auto layer = LABERINT3::create();
 	layer->setPhysicsWorld(scene->getPhysicsWorld());
 	
 
@@ -39,7 +39,7 @@ Scene* LABERINT2::createScene()
 }
 
 // on "init" you need to initialize your instance
-bool LABERINT2::init()
+bool LABERINT3::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -135,15 +135,15 @@ bool LABERINT2::init()
 
 
 	auto keyboardListener = EventListenerKeyboard::create();
-	keyboardListener->onKeyPressed = CC_CALLBACK_2(LABERINT2::onKeyPresed, this);
-	keyboardListener->onKeyReleased = CC_CALLBACK_2(LABERINT2::onKeyReleased, this);
+	keyboardListener->onKeyPressed = CC_CALLBACK_2(LABERINT3::onKeyPresed, this);
+	keyboardListener->onKeyReleased = CC_CALLBACK_2(LABERINT3::onKeyReleased, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 	this->scheduleUpdate();
 
 	//Physics
 
 	auto contactListener = EventListenerPhysicsContact::create();
-	contactListener->onContactBegin = CC_CALLBACK_1(LABERINT2::onContactBegin, this);
+	contactListener->onContactBegin = CC_CALLBACK_1(LABERINT3::onContactBegin, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 
 	hud = new HUD(_chara->vidas, true,def->getIntegerForKey("tiempo1"));
@@ -176,7 +176,7 @@ bool LABERINT2::init()
     return true;
 	
 }
-void LABERINT2::createdoor(int x, int tag) {
+void LABERINT3::createdoor(int x, int tag) {
 	
 	Door *door = Door::create();
 	door->setPosition3D(Vec3(x, -240, 0));
@@ -204,10 +204,10 @@ void LABERINT2::createdoor(int x, int tag) {
 	door->sprite->stopAllActions();
 	
 }
-PhysicsWorld* LABERINT2::getPhysicsWorld() {
+PhysicsWorld* LABERINT3::getPhysicsWorld() {
 	return mWorld;
 }
-void LABERINT2::createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffset, double yoffset, std::string name){
+void LABERINT3::createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffset, double yoffset, std::string name){
 	
 	//create platform
 	Platform *_plataforma = Platform::create();
@@ -232,7 +232,7 @@ void LABERINT2::createplatform(double x, double y, double z, double scale, doubl
 	addChild(_plataforma);
 
 }
-void LABERINT2::update(float dt) {
+void LABERINT3::update(float dt) {
 	if (moverderecha && free) {
 		//_chara->setPositionX(_chara->getPositionX() - _chara->getmovement());
 		_chara->getPhysicsBody()->applyForce(Vec2(_chara->force, -200000));
@@ -283,7 +283,7 @@ if (changescene == true) {
 }
 	
 
-void LABERINT2::menuCloseCallback(Ref* pSender)
+void LABERINT3::menuCloseCallback(Ref* pSender)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
@@ -295,12 +295,12 @@ void LABERINT2::menuCloseCallback(Ref* pSender)
     exit(0);
 #endif
 }
-void  LABERINT2::GoToPauseScene() 
+void  LABERINT3::GoToPauseScene() 
 {
 	auto scene = PauseScene::createScene();
 	Director::getInstance()->pushScene(scene);
 }
-void LABERINT2::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
+void LABERINT3::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	auto *aux = dynamic_cast<Platform*>(_plataformas->getLastObject());
 
 	_pressedKey = keycode;
@@ -368,7 +368,7 @@ void LABERINT2::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 
 
 }
-void LABERINT2::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
+void LABERINT3::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 
 	_pressedKey = keycode;
 	switch (keycode)
@@ -390,7 +390,7 @@ void LABERINT2::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 	}
 
 }
-bool LABERINT2::onContactBegin(cocos2d::PhysicsContact& contact) {
+bool LABERINT3::onContactBegin(cocos2d::PhysicsContact& contact) {
 	// Do something
 
 
@@ -419,7 +419,7 @@ bool LABERINT2::onContactBegin(cocos2d::PhysicsContact& contact) {
 
 	return true;
 }
-void LABERINT2::GotoNext()
+void LABERINT3::GotoNext()
 {
 	puntuacion = _chara->vidas * hud->tiempo;
 	def->setIntegerForKey("puntuacion1", puntuacion);
@@ -432,27 +432,30 @@ void LABERINT2::GotoNext()
 	{ 
 	case 1:
 		scene = LABERINT::createScene();
+		Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
 		break;
 	case 2:
 		scene = LABERINT2::createScene();
+		Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
 		break;
 	case 3:
-		scene = LABERINT3::createScene();
+		GotoMenuScene();
 		break;
 	case 4:
-		scene = LABERINT::createScene();
+		scene = LABERINT3::createScene();
+		Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
 	default:
 		break;
 	} 
-	Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
+	
 
 }
 
-void LABERINT2::GotoMenuScene()
+void LABERINT3::GotoMenuScene()
 {
 	if (_chara->vidas != 0) {
 	puntuacion = _chara->vidas * hud->tiempo;
-	def->setIntegerForKey("puntuacion1", puntuacion);
+	def->setIntegerForKey("puntuacion2", puntuacion);
 	}
 	else {
 		_chara->vidas = 3;
@@ -465,7 +468,7 @@ void LABERINT2::GotoMenuScene()
 	auto scene = Selectlevel::createScene();
 	Director::getInstance()->replaceScene(TransitionFade::create(1.0, scene));
 }
-void LABERINT2::Restart() {
+void LABERINT3::Restart() {
 	auto scene = LABERINT::createScene();
 	_puertas->autorelease();
 	Director::getInstance()->replaceScene(TransitionCrossFade::create(1.0, scene));

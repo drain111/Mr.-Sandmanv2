@@ -143,7 +143,7 @@ bool LABERINT::init()
 	contactListener->onContactBegin = CC_CALLBACK_1(LABERINT::onContactBegin, this);
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-	hud = new HUD(_chara->vidas, true,900);
+	hud = new HUD(_chara->vidas, true,def->getIntegerForKey("tiempo1"));
 	this->addChild(hud);
 
 	
@@ -426,7 +426,7 @@ void LABERINT::GotoNext()
 		scene = LABERINT::createScene();
 		break;
 	case 2:
-		//scene = LABERINT2::createScene();
+		scene = LABERINT2::createScene();
 		break;
 
 	case 3:

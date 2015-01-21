@@ -18,6 +18,7 @@ class Game2 : public cocos2d::Layer
 	bool arriba;
 	bool rotar;
 	cocos2d::Array *_plataformas;
+	cocos2d::Array *_trampas;
 	int i;
 	int j;
 	int k;
@@ -63,6 +64,8 @@ public:
 
 	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event *event);
 	void update(float dt);
+
+	void createtrap(double x, double y, double z, std::string name);
 
 	void createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffste, double yoffset, std::string name);
 

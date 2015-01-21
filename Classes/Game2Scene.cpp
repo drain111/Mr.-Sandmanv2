@@ -5,6 +5,7 @@
 #include "CXBOXController.h"
 #include "PauseScene.h"
 #include "DoorScene.h"
+#include "TrapScene.h"
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 #include "unistd.h";
 #include "sys/types.h";
@@ -78,17 +79,63 @@ bool Game2::init()
 	camera->setPosition3D(Vec3(0, 0, 500));
 	_plataformas = Array::create();
 	_plataformas->retain();
+	_trampas = Array::create();
+	_trampas->retain();
 	_chara->setPosition3D(Vec3(90.0, 90.0, 0.0));
 	_chara->setScale(1.0);
 	camera->lookAt(Vec3(0, 0, 0), Vec3(0, 1, 0));
 	addChild(camera);
 	camera->setScale(3);
 
-	createplatform(100.0, -300.0, 0.0, 8000.0, 160000, 1, 32, 65, "plataforma");
+	createplatform(200.0, -300.0, 0.0, 70.0, 1400, 1, 350, 65, "plataforma");
+	createtrap(300,-230,0,"trampa");
+	createtrap(335,-230,0,"trampa");
+	createtrap(370,-230,0,"trampa");
+	createplatform(600, -50, 0.0, 8.0, 160, 1, 32, 65, "plataforma");
+	createtrap(700,-230,0,"trampa");
+	createtrap(735,-230,0,"trampa");
+	createtrap(770,-230,0,"trampa");
+	createtrap(805,-230,0,"trampa");
+	createtrap(840,-230,0,"trampa");
+	createtrap(875,-230,0,"trampa");
+	createtrap(910,-230,0,"trampa");
+	createtrap(945,-230,0,"trampa");
+	createtrap(980,-230,0,"trampa");
+	createplatform(1000, -50, 0.0, 8.0, 160, 1, 32, 65, "plataforma");
+	createplatform(1500, -50, 0.0, 8.0, 160, 1, 32, 65, "plataforma");
+	createtrap(1600,15,0,"trampa");
+	createplatform(2000, -50, 0.0, 8.0, 160, 1, 32, 65, "plataforma");
+	createplatform(2500, -300.0, 0.0, 85.0, 1700, 1, 350, 65, "plataforma");
+	createtrap(2700,-230,0,"trampa");
+	createtrap(2735,-230,0,"trampa");
+	createtrap(2770,-230,0,"trampa");
+	createtrap(2805,-230,0,"trampa");
+	createtrap(2840,-230,0,"trampa");
+	createtrap(2875,-230,0,"trampa");
+	createtrap(2910,-230,0,"trampa");
+	createtrap(2945,-230,0,"trampa");
+	createtrap(2980,-230,0,"trampa");
+	createtrap(3200,-230,0,"trampa");
+	createtrap(3310,-230,0,"trampa");
+	createtrap(3520,-230,0,"trampa");
+	createtrap(3700,-230,0,"trampa");
 
-	auto door1 = Door::create();
-	addChild(door1); 
+
+	createplatform(4200.0, -300.0, 0.0, 8.0, 160, 1, 32, 65, "plataforma");
+
+	esfera = Sprite3D::create("char/esfera.c3t");
+	esfera->setPosition3D(Vec3(4300.0, 200.0, 0));
+	auto _bodyesf = PhysicsBody::createCircle(128, PHYSICSBODY_MATERIAL_DEFAULT, Vec2(-80, -80));
+	esfera->setScale(4);
+	_bodyesf->setContactTestBitmask(true);
+	_bodyesf->setDynamic(false);
+	_bodyesf->setRotationEnable(false);
+	_bodyesf->addMass(30.0);
 	
+	
+	esfera->setName("esfera");
+	esfera->setPhysicsBody(_bodyesf);
+	addChild(esfera);
 
 	auto keyboardListener = EventListenerKeyboard::create();
 	keyboardListener->onKeyPressed = CC_CALLBACK_2(Game2::onKeyPresed, this);
@@ -138,6 +185,28 @@ bool Game2::init()
 }
 PhysicsWorld* Game2::getPhysicsWorld() {
 	return mWorld;
+}
+void Game2::createtrap(double x, double y, double z, std::string name){
+	
+	//create trap
+	Trap *_trampa = Trap::create();
+	_trampa->setPosition3D(Vec3(x, y, z));
+	_trampa->setName(name);
+	_trampas->addObject(_trampa);
+
+
+	//create body
+	auto _body = PhysicsBody::createEdgeBox(Size(35, 20), PhysicsMaterial(10, 0, 0.9f), 1.0, Vec2(-5, 10));
+
+	_body->setContactTestBitmask(true);
+	_body->setDynamic(false);
+	_body->setRotationEnable(false);
+	_body->addMass(30.0);
+	_body->addMoment(2.0);
+	_body->setLinearDamping(0.8f);
+	_trampa->setPhysicsBody(_body);
+	addChild(_trampa);
+
 }
 void Game2::createplatform(double x, double y, double z, double scale, double bodyscalex, double bodyscaley, double xoffset, double yoffset, std::string name){
 	
@@ -311,15 +380,19 @@ void Game2::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 }
 bool Game2::onContactBegin(cocos2d::PhysicsContact& contact) {
 	// Do something
-
-
-
-
-
-
 	auto spriteA = (Sprite*)contact.getShapeA()->getBody()->getNode();
 	auto spriteB = (Sprite*)contact.getShapeB()->getBody()->getNode();
-
+	if ((spriteA->getName().compare("trampa") == 0 || spriteA->getName().compare("character") == 0) && (spriteB->getName().compare("trampa") == 0 || spriteB->getName().compare("character") == 0)) {
+		if(muerto==false){
+			_chara->vidas -= 1;
+			muerto = true;
+			def->setIntegerForKey("vidas", _chara->vidas);
+			if (!def->getIntegerForKey("vidas") == 0) Restart();
+			else {
+				GotoMenuScene();
+			}
+		}
+	}
 	
 	if ((spriteA->getName().compare("esfera") == 0 || spriteA->getName().compare("character") == 0) && (spriteB->getName().compare("esfera") == 0 || spriteB->getName().compare("character") == 0)) {
 		GotoMenuScene();
@@ -330,7 +403,7 @@ void Game2::GotoMenuScene()
 {
 	if (_chara->vidas != 0) {
 	puntuacion = _chara->vidas * hud->tiempo;
-	def->setIntegerForKey("puntuacion1", puntuacion);
+	def->setIntegerForKey("puntuacion3", puntuacion);
 	}
 	else {
 		_chara->vidas = 3;

@@ -8,6 +8,7 @@ USING_NS_CC;
 #include "PlatformScene.h"
 #include "CXBOXController.h"
 #include "HUD.h"
+#include "DoorScene.h"
 
 class LABERINT3 : public cocos2d::Layer
 {

@@ -6,6 +6,9 @@
 #include <string>
 #include "CXBOXController.h"
 #include "PauseScene.h"
+#include "finalgame.h"
+#include "SimpleAudioEngine.h"
+
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
 #include "unistd.h";
 #include "sys/types.h";
@@ -54,7 +57,8 @@ bool Selectlevel::init()
 
 	
 #pragma region Creaciondevariables
-
+	CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("musica juego.mp3");
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("musica juego.mp3", true);
 	_chara = Character::create();
 	addChild(_chara);
 	Point center = Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y);
@@ -159,10 +163,15 @@ bool Selectlevel::init()
 	__String *puntuacion = __String::createWithFormat("Puntuacion: %d", def->getIntegerForKey("puntuacion1"));
 	LabelTTF *puntuacion1 = LabelTTF::create(puntuacion->getCString(), "Cryptik", 100.0f, Size::ZERO, TextHAlignment::CENTER, TextVAlignment::CENTER);
 	addChild(puntuacion1);
-	__String *puntuacion2 = __String::createWithFormat("Puntuacion: %d", def->getIntegerForKey("puntuacion1"));
-	LabelTTF *puntuacion3 = LabelTTF::create(puntuacion->getCString(), "Cryptik", 100.0f, Size::ZERO, TextHAlignment::CENTER, TextVAlignment::CENTER);
+	__String *puntuacion2 = __String::createWithFormat("Puntuacion: %d", def->getIntegerForKey("puntuacion2"));
+	LabelTTF *puntuacion3 = LabelTTF::create(puntuacion2->getCString(), "Cryptik", 100.0f, Size::ZERO, TextHAlignment::CENTER, TextVAlignment::CENTER);
 	puntuacion3->setPositionX(700);
 	addChild(puntuacion3);
+
+	__String *puntuacion4 = __String::createWithFormat("                           Puntuacion: %d", def->getIntegerForKey("puntuacion3"));
+	LabelTTF *puntuacion5 = LabelTTF::create(puntuacion4->getCString(), "Cryptik", 100.0f, Size::ZERO, TextHAlignment::LEFT, TextVAlignment::CENTER);
+	puntuacion5->setPositionX(1200);
+	addChild(puntuacion5);
 	
 	//xinput
 
@@ -297,10 +306,14 @@ void Selectlevel::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	switch (keycode)
 	{
 	case EventKeyboard::KeyCode::KEY_A:
+		_chara->setRotation3D(Vec3(0, 180, 0));
 		moverderecha = true;
+		_chara->runanimation();
 		break;
 	case EventKeyboard::KeyCode::KEY_D:
+		_chara->setRotation3D(Vec3(0, 0, 0));
 		moverizq = true;
+		_chara->runanimation();
 		break;
 	case EventKeyboard::KeyCode::KEY_Q:
 		GoToPauseScene();
@@ -329,6 +342,7 @@ void Selectlevel::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 		_chara->getPhysicsBody()->resetForces();
 		break;
 	}
+	_chara->sprite->stopAllActions();
 
 }
 bool Selectlevel::onContactBegin(cocos2d::PhysicsContact& contact) {
@@ -376,6 +390,9 @@ void Selectlevel::GoToGameScene()
 
 	case 2:
 		scene= Game2::createScene();
+		break;
+	case 3:
+		scene = finalgame::createScene();
 		break;
 	default:
 		break;

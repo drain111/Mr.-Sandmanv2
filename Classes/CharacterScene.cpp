@@ -43,13 +43,13 @@ bool Character::init()
 	return true;
 }
 void Character::jumpanimation() {
-	auto animation = Animation3D::create("char/saltito.c3t");
+	auto animation = Animation3D::create("char/charsalta.c3t");
 
 	// creates the Action with Animation object
 	auto animate = Animate3D::create(animation);
 
 	// runs the animation
-	sprite->runAction(RepeatForever::create(animate));
+	sprite->runAction(animate);
 }
 void Character::runanimation() {
 	auto animation = Animation3D::create("char/andar.c3t");

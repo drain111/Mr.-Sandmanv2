@@ -2,6 +2,7 @@
 #include "Selectlevelscene.h"
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
+#include "Laberint3Scene.h"
 
 USING_NS_CC;
 Scene* MainMenu::createScene()
@@ -75,6 +76,9 @@ void MainMenu::GoToGameScene(Ref* pSender)
 
 	def->setIntegerForKey("vidas", 3);
 	def->setIntegerForKey("puntuacion1", 0);
+	def->setIntegerForKey("puntuacion2", 0);
+	def->setIntegerForKey("puntuacion3", 0);
+
 	def->flush();
 	auto scene = Selectlevel::createScene();
 	CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic(true);//parar la musica del menu al pasar al juego

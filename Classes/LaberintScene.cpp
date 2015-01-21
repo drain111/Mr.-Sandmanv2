@@ -248,6 +248,9 @@ void LABERINT::update(float dt) {
 
 		if (_chara->getPhysicsBody()->getVelocity().y == 0) {
 			free = true;
+			_chara->runanimation();
+			_chara->sprite->stopAllActions();
+
 			_chara->getPhysicsBody()->setVelocityLimit(400);
 
 		}
@@ -300,10 +303,14 @@ void LABERINT::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	switch (keycode)
 	{
 	case EventKeyboard::KeyCode::KEY_D:
+		_chara->setRotation3D(Vec3(0, 180, 0));
+
 		moverderecha = true;
 		_chara->runanimation();
 		break;
 	case EventKeyboard::KeyCode::KEY_A:
+		_chara->setRotation3D(Vec3(0, 0, 0));
+
 		moverizq = true;
 		_chara->runanimation();
 
@@ -380,6 +387,7 @@ void LABERINT::onKeyReleased(EventKeyboard::KeyCode keycode, Event *event){
 	
 	
 	}
+	_chara->sprite->stopAllActions();
 
 }
 bool LABERINT::onContactBegin(cocos2d::PhysicsContact& contact) {
@@ -407,6 +415,7 @@ bool LABERINT::onContactBegin(cocos2d::PhysicsContact& contact) {
 			selecciondenivel = false;
 		}
 	}
+	
 
 
 	return true;

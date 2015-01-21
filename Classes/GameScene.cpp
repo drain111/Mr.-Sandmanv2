@@ -276,6 +276,9 @@ void Game::update(float dt) {
 
 		if (_chara->getPhysicsBody()->getVelocity().y == 0) {
 			free = true;
+			_chara->runanimation();
+			_chara->sprite->stopAllActions();
+
 			_chara->getPhysicsBody()->setVelocityLimit(400);
 
 		}
@@ -323,11 +326,14 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	switch (keycode)
 	{
 	case EventKeyboard::KeyCode::KEY_D:
+		_chara->setRotation3D(Vec3(0, 180, 0));
+
 		moverderecha = true;
 		_chara->runanimation();
 		break;
 	case EventKeyboard::KeyCode::KEY_A:
 		moverizq = true;
+		_chara->setRotation3D(Vec3(0, 0, 0));
 
 		_chara->runanimation();
 
@@ -335,7 +341,8 @@ void Game::onKeyPresed(EventKeyboard::KeyCode keycode, Event *event){
 	case EventKeyboard::KeyCode::KEY_W:
 		
 			_chara->getPhysicsBody()->setVelocityLimit(700);
-			
+			_chara->jumpanimation();
+
 			if (moverderecha) {
 				_chara->getPhysicsBody()->resetForces();
 
@@ -420,6 +427,7 @@ bool Game::onContactBegin(cocos2d::PhysicsContact& contact) {
 	if ((spriteA->getName().compare("esfera") == 0 || spriteA->getName().compare("character") == 0) && (spriteB->getName().compare("esfera") == 0 || spriteB->getName().compare("character") == 0)) {
 		GotoMenuScene();
 	}
+	
 	return true;
 }
 void Game::GotoMenuScene()
